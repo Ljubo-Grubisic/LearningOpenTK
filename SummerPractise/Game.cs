@@ -155,22 +155,28 @@ namespace SummerPractise
             base.OnRenderFrame(args);
             Clear();
 
-            //LightPosition.Z = MathF.Cos((float)GLFW.GetTime() - MathHelper.PiOver3) * 2;
-            //LightPosition.Y = MathF.Sin((float)GLFW.GetTime() - MathHelper.PiOver3) * 2;
-            //LightPosition.X = MathF.Cos((float)GLFW.GetTime()) * 2;
+            Vector3 lightColor = new Vector3();
+            lightColor.X = MathF.Sin((float)GLFW.GetTime() * 2.0f);
+            lightColor.Y = MathF.Sin((float)GLFW.GetTime() * 0.7f);
+            lightColor.Z = MathF.Sin((float)GLFW.GetTime() * 1.3f);
 
-            //Camera.Position = LightPosition + new Vector3(0.0f, -2.0f, 0.0f);
+            Vector3 diffuseColor = lightColor * new Vector3(0.5f);
+            Vector3 ambientColor = diffuseColor * new Vector3(0.2f);
 
             LightingShader.Use();
 
             GL.BindVertexArray(vaoLight);
 
-            Vector3 metalColor = new Vector3(0.2745f, 0.2784f, 0.25088f);
-            Vector3 coralColor = new Vector3(1.0f, 0.5f, 0.31f);
+            LightingShader.SetVec3("material.ambient", 1.0f, 0.5f, 0.31f);
+            LightingShader.SetVec3("material.diffuse", 1.0f, 0.5f, 0.31f);
+            LightingShader.SetVec3("material.specular", 0.5f, 0.5f, 0.5f);
+            LightingShader.SetFloat("material.shininess", 32.0f);
 
-            LightingShader.SetVec3("objectColor", coralColor);
-            LightingShader.SetVec3("lightColor", 1.0f, 1.0f, 1.0f);
-            LightingShader.SetVec3("lightPos", LightPosition);
+            LightingShader.SetVec3("light.ambient", ambientColor);
+            LightingShader.SetVec3("light.diffuse", diffuseColor);
+            LightingShader.SetVec3("light.specular", 1.0f, 1.0f, 1.0f);
+            LightingShader.SetVec3("light.position", LightPosition);
+
             LightingShader.SetVec3("viewPos", Camera.Position);
             
             Model = Matrix4.Identity;
@@ -189,6 +195,8 @@ namespace SummerPractise
             GL.BindVertexArray(vaoLamp);
 
             Model = Matrix4.CreateScale(0.2f) * Matrix4.CreateTranslation(LightPosition);
+
+            LampShader.SetVec3("color", diffuseColor);
 
             LampShader.SetMatrix("view", View);
             LampShader.SetMatrix("projection", Projecton);
