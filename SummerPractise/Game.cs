@@ -147,7 +147,7 @@ namespace SummerPractise
             Camera.UpdateKeys(MouseState, KeyboardState, (float)args.Time);
 
             Projecton = Camera.GetProjectionMatrix();
-            View = Camera.GetViewMatrix(new Vector3());
+            View = Camera.GetViewMatrix();
         }
 
         protected override void OnRenderFrame(FrameEventArgs args)
@@ -155,11 +155,11 @@ namespace SummerPractise
             base.OnRenderFrame(args);
             Clear();
 
-            LightPosition.Z = MathF.Cos((float)GLFW.GetTime() - MathHelper.PiOver3) * 2;
-            LightPosition.Y = MathF.Sin((float)GLFW.GetTime() - MathHelper.PiOver3) * 2;
-            LightPosition.X = MathF.Cos((float)GLFW.GetTime()) * 2;
+            //LightPosition.Z = MathF.Cos((float)GLFW.GetTime() - MathHelper.PiOver3) * 2;
+            //LightPosition.Y = MathF.Sin((float)GLFW.GetTime() - MathHelper.PiOver3) * 2;
+            //LightPosition.X = MathF.Cos((float)GLFW.GetTime()) * 2;
 
-            Camera.Position = LightPosition + new Vector3(0.0f, -2.0f, 0.0f);
+            //Camera.Position = LightPosition + new Vector3(0.0f, -2.0f, 0.0f);
 
             LightingShader.Use();
 
