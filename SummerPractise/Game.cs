@@ -38,42 +38,43 @@ namespace SummerPractise
 
         private float[] VertexData =
         {
-            -0.5f, -0.5f, -0.5f,  //0.0f, 0.0f,
-            0.5f, -0.5f, -0.5f,   //1.0f, 0.0f,
-            0.5f, 0.5f, -0.5f,    //1.0f, 1.0f,
-            0.5f, 0.5f, -0.5f,    //1.0f, 1.0f,
-            -0.5f, 0.5f, -0.5f,   //0.0f, 1.0f,
-            -0.5f, -0.5f, -0.5f,  //0.0f, 0.0f,
-            -0.5f, -0.5f, 0.5f,   //0.0f, 0.0f,
-            0.5f, -0.5f, 0.5f,    //1.0f, 0.0f,
-            0.5f, 0.5f, 0.5f,     //1.0f, 1.0f,
-            0.5f, 0.5f, 0.5f,     //1.0f, 1.0f,
-            -0.5f, 0.5f, 0.5f,    //0.0f, 1.0f,
-            -0.5f, -0.5f, 0.5f,   //0.0f, 0.0f,
-            -0.5f, 0.5f, 0.5f,    //1.0f, 0.0f,
-            -0.5f, 0.5f, -0.5f,   //1.0f, 1.0f,
-            -0.5f, -0.5f, -0.5f,  //0.0f, 1.0f,
-            -0.5f, -0.5f, -0.5f,  //0.0f, 1.0f,
-            -0.5f, -0.5f, 0.5f,   //0.0f, 0.0f,
-            -0.5f, 0.5f, 0.5f,    //1.0f, 0.0f,
-            0.5f, 0.5f, 0.5f,     //1.0f, 0.0f,
-            0.5f, 0.5f, -0.5f,    //1.0f, 1.0f,
-            0.5f, -0.5f, -0.5f,   //0.0f, 1.0f,
-            0.5f, -0.5f, -0.5f,   //0.0f, 1.0f,
-            0.5f, -0.5f, 0.5f,    //0.0f, 0.0f,
-            0.5f, 0.5f, 0.5f,     //1.0f, 0.0f,
-            -0.5f, -0.5f, -0.5f,  //0.0f, 1.0f,
-            0.5f, -0.5f, -0.5f,   //1.0f, 1.0f,
-            0.5f, -0.5f, 0.5f,    //1.0f, 0.0f,
-            0.5f, -0.5f, 0.5f,    //1.0f, 0.0f,
-            -0.5f, -0.5f, 0.5f,   //0.0f, 0.0f,
-            -0.5f, -0.5f, -0.5f,  //0.0f, 1.0f,
-            -0.5f, 0.5f, -0.5f,   //0.0f, 1.0f,
-            0.5f, 0.5f, -0.5f,    //1.0f, 1.0f,
-            0.5f, 0.5f, 0.5f,     //1.0f, 0.0f,
-            0.5f, 0.5f, 0.5f,     //1.0f, 0.0f,
-            -0.5f, 0.5f, 0.5f,    //0.0f, 0.0f,
-            -0.5f, 0.5f, -0.5f,   //0.0f, 1.0f
+            // positions // normals // texture coords
+            -0.5f, -0.5f, -0.5f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f,
+            0.5f, -0.5f, -0.5f, 0.0f, 0.0f, -1.0f, 1.0f, 0.0f,
+            0.5f, 0.5f, -0.5f, 0.0f, 0.0f, -1.0f, 1.0f, 1.0f,
+            0.5f, 0.5f, -0.5f, 0.0f, 0.0f, -1.0f, 1.0f, 1.0f,
+            -0.5f, 0.5f, -0.5f, 0.0f, 0.0f, -1.0f, 0.0f, 1.0f,
+            -0.5f, -0.5f, -0.5f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f,
+            -0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+            0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f,
+            0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f,
+            0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f,
+            -0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f,
+            -0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+            -0.5f, 0.5f, 0.5f, -1.0f, 0.0f, 0.0f, 1.0f, 0.0f,
+            -0.5f, 0.5f, -0.5f, -1.0f, 0.0f, 0.0f, 1.0f, 1.0f,
+            -0.5f, -0.5f, -0.5f, -1.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+            -0.5f, -0.5f, -0.5f, -1.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+            -0.5f, -0.5f, 0.5f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+            -0.5f, 0.5f, 0.5f, -1.0f, 0.0f, 0.0f, 1.0f, 0.0f,
+            0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f,
+            0.5f, 0.5f, -0.5f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f,
+            0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+            0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+            0.5f, -0.5f, 0.5f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+            0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f,
+            -0.5f, -0.5f, -0.5f, 0.0f, -1.0f, 0.0f, 0.0f, 1.0f,
+            0.5f, -0.5f, -0.5f, 0.0f, -1.0f, 0.0f, 1.0f, 1.0f,
+            0.5f, -0.5f, 0.5f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f,
+            0.5f, -0.5f, 0.5f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f,
+            -0.5f, -0.5f, 0.5f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f,
+            -0.5f, -0.5f, -0.5f, 0.0f, -1.0f, 0.0f, 0.0f, 1.0f,
+            -0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f,
+            0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f,
+            0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f,
+            0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f,
+            -0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f,
+            -0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f
         };
 
         private Vector3 LightPosition = new Vector3(1.2f, 1.0f, 2.0f);
@@ -112,19 +113,26 @@ namespace SummerPractise
             GL.BindBuffer(BufferTarget.ArrayBuffer, vbo);
             GL.BufferData(BufferTarget.ArrayBuffer, VertexData.Length * sizeof(float), VertexData, BufferUsageHint.StaticDraw);
 
+
+            GL.BindVertexArray(vaoLight);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, vbo);
             {
-                GL.BindVertexArray(vaoLight);
-                GL.BindBuffer(BufferTarget.ArrayBuffer, vbo);
                 int location = LightingShader.GetAttribLocation("aPos");
-                GL.VertexAttribPointer(location, 3, VertexAttribPointerType.Float, false, sizeof(float) * 3, 0);
+                GL.VertexAttribPointer(location, 3, VertexAttribPointerType.Float, false, sizeof(float) * 8, 0);
+                GL.EnableVertexAttribArray(location);
+            }
+            {
+                int location = LightingShader.GetAttribLocation("aNormal");
+                GL.VertexAttribPointer(location, 3, VertexAttribPointerType.Float, false, sizeof(float) * 8, sizeof(float) * 3);
                 GL.EnableVertexAttribArray(location);
             }
 
+
+            GL.BindVertexArray(vaoLamp);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, vbo);
             {
-                GL.BindVertexArray(vaoLamp);
-                GL.BindBuffer(BufferTarget.ArrayBuffer, vbo);
                 int location = LightingShader.GetAttribLocation("aPos");
-                GL.VertexAttribPointer(location, 3, VertexAttribPointerType.Float, false, sizeof(float) * 3, 0);
+                GL.VertexAttribPointer(location, 3, VertexAttribPointerType.Float, false, sizeof(float) * 8, 0);
                 GL.EnableVertexAttribArray(location);
             }
 
@@ -139,7 +147,7 @@ namespace SummerPractise
             Camera.UpdateKeys(MouseState, KeyboardState, (float)args.Time);
 
             Projecton = Camera.GetProjectionMatrix();
-            View = Camera.GetViewMatrix();
+            View = Camera.GetViewMatrix(new Vector3());
         }
 
         protected override void OnRenderFrame(FrameEventArgs args)
@@ -147,12 +155,23 @@ namespace SummerPractise
             base.OnRenderFrame(args);
             Clear();
 
+            LightPosition.Z = MathF.Cos((float)GLFW.GetTime() - MathHelper.PiOver3) * 2;
+            LightPosition.Y = MathF.Sin((float)GLFW.GetTime() - MathHelper.PiOver3) * 2;
+            LightPosition.X = MathF.Cos((float)GLFW.GetTime()) * 2;
+
+            Camera.Position = LightPosition + new Vector3(0.0f, -2.0f, 0.0f);
+
             LightingShader.Use();
 
             GL.BindVertexArray(vaoLight);
 
-            LightingShader.SetVec3("objectColor", 1.0f, 0.5f, 0.31f);
+            Vector3 metalColor = new Vector3(0.2745f, 0.2784f, 0.25088f);
+            Vector3 coralColor = new Vector3(1.0f, 0.5f, 0.31f);
+
+            LightingShader.SetVec3("objectColor", coralColor);
             LightingShader.SetVec3("lightColor", 1.0f, 1.0f, 1.0f);
+            LightingShader.SetVec3("lightPos", LightPosition);
+            LightingShader.SetVec3("viewPos", Camera.Position);
             
             Model = Matrix4.Identity;
 

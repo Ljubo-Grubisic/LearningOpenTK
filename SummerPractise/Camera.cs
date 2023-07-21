@@ -87,6 +87,11 @@ namespace SummerPractise
             return Matrix4.LookAt(Position, Position + Front, Up);
         }
 
+        internal Matrix4 GetViewMatrix(Vector3 LookingAt)
+        {
+            return Matrix4.LookAt(Position, LookingAt, Up);
+        }
+
         internal void UpdateKeys(MouseState mouse, KeyboardState keyboard, float time)
         {
             Yaw += MathHelper.Clamp(mouse.Delta.X * Sensitivity, -89, 89);
