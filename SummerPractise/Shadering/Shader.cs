@@ -4,6 +4,7 @@ using System.IO;
 using System.Numerics;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.GraphicsLibraryFramework;
+using Vector3 = OpenTK.Mathematics.Vector3;
 
 namespace SummerPractise.Shadering
 {
@@ -26,6 +27,14 @@ namespace SummerPractise.Shadering
             GL.UseProgram(0);
         }
 
+        public int GetAttribLocation(string attribName)
+        {
+            int location = GL.GetAttribLocation(id, attribName);
+            if (location == -1)
+                throw new Exception();
+            return location;
+        }
+
         public void SetInt(string name, int data)
         {
             Use();
@@ -40,11 +49,24 @@ namespace SummerPractise.Shadering
             GL.Uniform1(location, data);
         }
 
-        public void SetMatrix(string name, Matrix4 matrix)
+        public void SetMatrix(string name, Matrix4 data)
         {
             Use();
             int location = GL.GetUniformLocation(id, name);
-            GL.UniformMatrix4(location, false, ref matrix);
+            GL.UniformMatrix4(location, false, ref data);
+        }
+
+        public void SetVec3(string name, Vector3 data)
+        {
+            Use();
+            int location = GL.GetUniformLocation(id, name);
+            GL.Uniform3(location, data);
+        }
+        public void SetVec3(string name, float dataX, float dataY, float dataZ)
+        {
+            Use();
+            int location = GL.GetUniformLocation(id, name);
+            GL.Uniform3(location, new Vector3(dataX, dataY, dataZ));
         }
 
         private int LoadShader(string location, ShaderType type)

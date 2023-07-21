@@ -23,10 +23,12 @@ namespace SummerPractise
         {
         }
 
-        private int vao;
+        private int vaoLight;
+        private int vaoLamp;
 
         private Camera Camera;
-        private Shader Shader;
+        private Shader LightingShader;
+        private Shader LampShader;
         private Texture ContainerTexture;
         private Texture SmileTexture;
 
@@ -36,44 +38,45 @@ namespace SummerPractise
 
         private float[] VertexData =
         {
-            -0.5f, -0.5f, -0.5f, 0.0f, 0.0f,
-            0.5f, -0.5f, -0.5f, 1.0f, 0.0f,
-            0.5f, 0.5f, -0.5f, 1.0f, 1.0f,
-            0.5f, 0.5f, -0.5f, 1.0f, 1.0f,
-            -0.5f, 0.5f, -0.5f, 0.0f, 1.0f,
-            -0.5f, -0.5f, -0.5f, 0.0f, 0.0f,
-            -0.5f, -0.5f, 0.5f, 0.0f, 0.0f,
-            0.5f, -0.5f, 0.5f, 1.0f, 0.0f,
-            0.5f, 0.5f, 0.5f, 1.0f, 1.0f,
-            0.5f, 0.5f, 0.5f, 1.0f, 1.0f,
-            -0.5f, 0.5f, 0.5f, 0.0f, 1.0f,
-            -0.5f, -0.5f, 0.5f, 0.0f, 0.0f,
-            -0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
-            -0.5f, 0.5f, -0.5f, 1.0f, 1.0f,
-            -0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
-            -0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
-            -0.5f, -0.5f, 0.5f, 0.0f, 0.0f,
-            -0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
-            0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
-            0.5f, 0.5f, -0.5f, 1.0f, 1.0f,
-            0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
-            0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
-            0.5f, -0.5f, 0.5f, 0.0f, 0.0f,
-            0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
-            -0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
-            0.5f, -0.5f, -0.5f, 1.0f, 1.0f,
-            0.5f, -0.5f, 0.5f, 1.0f, 0.0f,
-            0.5f, -0.5f, 0.5f, 1.0f, 0.0f,
-            -0.5f, -0.5f, 0.5f, 0.0f, 0.0f,
-            -0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
-            -0.5f, 0.5f, -0.5f, 0.0f, 1.0f,
-            0.5f, 0.5f, -0.5f, 1.0f, 1.0f,
-            0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
-            0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
-            -0.5f, 0.5f, 0.5f, 0.0f, 0.0f,
-            -0.5f, 0.5f, -0.5f, 0.0f, 1.0f
+            -0.5f, -0.5f, -0.5f,  //0.0f, 0.0f,
+            0.5f, -0.5f, -0.5f,   //1.0f, 0.0f,
+            0.5f, 0.5f, -0.5f,    //1.0f, 1.0f,
+            0.5f, 0.5f, -0.5f,    //1.0f, 1.0f,
+            -0.5f, 0.5f, -0.5f,   //0.0f, 1.0f,
+            -0.5f, -0.5f, -0.5f,  //0.0f, 0.0f,
+            -0.5f, -0.5f, 0.5f,   //0.0f, 0.0f,
+            0.5f, -0.5f, 0.5f,    //1.0f, 0.0f,
+            0.5f, 0.5f, 0.5f,     //1.0f, 1.0f,
+            0.5f, 0.5f, 0.5f,     //1.0f, 1.0f,
+            -0.5f, 0.5f, 0.5f,    //0.0f, 1.0f,
+            -0.5f, -0.5f, 0.5f,   //0.0f, 0.0f,
+            -0.5f, 0.5f, 0.5f,    //1.0f, 0.0f,
+            -0.5f, 0.5f, -0.5f,   //1.0f, 1.0f,
+            -0.5f, -0.5f, -0.5f,  //0.0f, 1.0f,
+            -0.5f, -0.5f, -0.5f,  //0.0f, 1.0f,
+            -0.5f, -0.5f, 0.5f,   //0.0f, 0.0f,
+            -0.5f, 0.5f, 0.5f,    //1.0f, 0.0f,
+            0.5f, 0.5f, 0.5f,     //1.0f, 0.0f,
+            0.5f, 0.5f, -0.5f,    //1.0f, 1.0f,
+            0.5f, -0.5f, -0.5f,   //0.0f, 1.0f,
+            0.5f, -0.5f, -0.5f,   //0.0f, 1.0f,
+            0.5f, -0.5f, 0.5f,    //0.0f, 0.0f,
+            0.5f, 0.5f, 0.5f,     //1.0f, 0.0f,
+            -0.5f, -0.5f, -0.5f,  //0.0f, 1.0f,
+            0.5f, -0.5f, -0.5f,   //1.0f, 1.0f,
+            0.5f, -0.5f, 0.5f,    //1.0f, 0.0f,
+            0.5f, -0.5f, 0.5f,    //1.0f, 0.0f,
+            -0.5f, -0.5f, 0.5f,   //0.0f, 0.0f,
+            -0.5f, -0.5f, -0.5f,  //0.0f, 1.0f,
+            -0.5f, 0.5f, -0.5f,   //0.0f, 1.0f,
+            0.5f, 0.5f, -0.5f,    //1.0f, 1.0f,
+            0.5f, 0.5f, 0.5f,     //1.0f, 0.0f,
+            0.5f, 0.5f, 0.5f,     //1.0f, 0.0f,
+            -0.5f, 0.5f, 0.5f,    //0.0f, 0.0f,
+            -0.5f, 0.5f, -0.5f,   //0.0f, 1.0f
         };
 
+        private Vector3 LightPosition = new Vector3(1.2f, 1.0f, 2.0f);
         private Vector3[] CubePositions =
         {
             new Vector3(0.0f, 0.0f, 0.0f),
@@ -96,34 +99,36 @@ namespace SummerPractise
 
             GL.Enable(EnableCap.DepthTest);
 
-            Camera = new Camera(new Vector3(0, 0, 3), (float)this.Size.X / (float)this.Size.Y, 45);
+            Camera = new Camera(new Vector3(0, 0, 4), (float)this.Size.X / (float)this.Size.Y, 45);
 
-            Shader = new Shader("../../../Shadering/Shaders/VertexShader.glsl", "../../../Shadering/Shaders/FragmentShader.glsl");
-            Shader.SetInt("texture1", 1);
-            Shader.SetInt("texture2", 2);
+            LightingShader = new Shader("Shadering/Shaders/VertexShader.glsl", "Shadering/Shaders/FragmentShader.glsl");
+            LampShader = new Shader("Shadering/Shaders/VertexShader.glsl", "Shadering/Shaders/Lighting/LightingFragmentShader.glsl");
 
-            ContainerTexture = Texture.LoadFromFile("../../../Texturing/Textures/Imgs/container.png");
-            SmileTexture = Texture.LoadFromFile("../../../Texturing/Textures/Imgs/awesomeface.png");
-
-            vao = GL.GenVertexArray();
+            vaoLight = GL.GenVertexArray();
+            vaoLamp = GL.GenVertexArray();
             int vbo = GL.GenBuffer();
 
-            GL.BindVertexArray(vao);
-
-            // Add data to the vbo
+            // Add data to vbo
             GL.BindBuffer(BufferTarget.ArrayBuffer, vbo);
             GL.BufferData(BufferTarget.ArrayBuffer, VertexData.Length * sizeof(float), VertexData, BufferUsageHint.StaticDraw);
 
-            // Tell the vao how to interpet the vertex data
-            GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, sizeof(float) * 5, 0);
-            GL.EnableVertexAttribArray(0);
+            {
+                GL.BindVertexArray(vaoLight);
+                GL.BindBuffer(BufferTarget.ArrayBuffer, vbo);
+                int location = LightingShader.GetAttribLocation("aPos");
+                GL.VertexAttribPointer(location, 3, VertexAttribPointerType.Float, false, sizeof(float) * 3, 0);
+                GL.EnableVertexAttribArray(location);
+            }
 
-            // Tell the vao how to interpet the texture data
-            GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, sizeof(float) * 5, sizeof(float) * 3);
-            GL.EnableVertexAttribArray(1);
+            {
+                GL.BindVertexArray(vaoLamp);
+                GL.BindBuffer(BufferTarget.ArrayBuffer, vbo);
+                int location = LightingShader.GetAttribLocation("aPos");
+                GL.VertexAttribPointer(location, 3, VertexAttribPointerType.Float, false, sizeof(float) * 3, 0);
+                GL.EnableVertexAttribArray(location);
+            }
 
             GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
-            
             GL.BindVertexArray(0);
         }
 
@@ -142,25 +147,36 @@ namespace SummerPractise
             base.OnRenderFrame(args);
             Clear();
 
-            Shader.SetMatrix("view", View);
-            Shader.SetMatrix("projection", Projecton);
+            LightingShader.Use();
 
-            Shader.Use();
+            GL.BindVertexArray(vaoLight);
 
-            ContainerTexture.Use(TextureUnit.Texture1);
-            SmileTexture.Use(TextureUnit.Texture2);
+            LightingShader.SetVec3("objectColor", 1.0f, 0.5f, 0.31f);
+            LightingShader.SetVec3("lightColor", 1.0f, 1.0f, 1.0f);
+            
+            Model = Matrix4.Identity;
 
-            GL.BindVertexArray(vao);
+            LightingShader.SetMatrix("view", View);
+            LightingShader.SetMatrix("projection", Projecton);
+            LightingShader.SetMatrix("model", Model);
 
-            for (int i = 0; i < CubePositions.Length; i++)
-            {
-                Model = Matrix4.Identity * Matrix4.CreateRotationZ(MathHelper.DegreesToRadians(50.0f * i * (float)GLFW.GetTime())) * Matrix4.CreateTranslation(CubePositions[i]);
-
-                Shader.SetMatrix("model", Model);
-
-                GL.DrawArrays(PrimitiveType.Triangles, 0, 36);
-            }
+            GL.DrawArrays(PrimitiveType.Triangles, 0, 36);
   
+            GL.BindVertexArray(0);
+
+
+            LampShader.Use();
+
+            GL.BindVertexArray(vaoLamp);
+
+            Model = Matrix4.CreateScale(0.2f) * Matrix4.CreateTranslation(LightPosition);
+
+            LampShader.SetMatrix("view", View);
+            LampShader.SetMatrix("projection", Projecton);
+            LampShader.SetMatrix("model", Model);
+
+            GL.DrawArrays(PrimitiveType.Triangles, 0, 36);
+
             GL.BindVertexArray(0);
 
             SwapBuffers();
