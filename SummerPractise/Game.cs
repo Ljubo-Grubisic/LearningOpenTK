@@ -196,8 +196,6 @@ namespace SummerPractise
 
             Model = Matrix4.CreateScale(0.2f) * Matrix4.CreateTranslation(LightPosition);
 
-            LampShader.SetVec3("color", diffuseColor);
-
             LampShader.SetMatrix("view", View);
             LampShader.SetMatrix("projection", Projecton);
             LampShader.SetMatrix("model", Model);
