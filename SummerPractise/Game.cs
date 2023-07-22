@@ -33,7 +33,6 @@ namespace SummerPractise
 
         private Texture ContainerTexture;
         private Texture ContainerSpecularTexture;
-        private Texture ContainerEmissionTexture;
 
         private Matrix4 Model;
         private Matrix4 View;
@@ -83,16 +82,16 @@ namespace SummerPractise
         private Vector3 LightPosition = new Vector3(1.2f, 1.0f, 2.0f);
         private Vector3[] CubePositions =
         {
-            new Vector3(0.0f, 0.0f, 0.0f),
-            new Vector3(2.0f, 5.0f, -15.0f),
+            new Vector3( 0.0f,  0.0f,  0.0f),
+            new Vector3( 2.0f,  5.0f, -15.0f),
             new Vector3(-1.5f, -2.2f, -2.5f),
             new Vector3(-3.8f, -2.0f, -12.3f),
             new Vector3( 2.4f, -0.4f, -3.5f),
-            new Vector3(-1.7f, 3.0f, -7.5f),
+            new Vector3(-1.7f,  3.0f, -7.5f),
             new Vector3( 1.3f, -2.0f, -2.5f),
-            new Vector3( 1.5f, 2.0f, -2.5f),
-            new Vector3( 1.5f, 0.2f, -1.5f),
-            new Vector3(-1.3f, 1.0f, -1.5f),
+            new Vector3( 1.5f,  2.0f, -2.5f),
+            new Vector3( 1.5f,  0.2f, -1.5f),
+            new Vector3(-1.3f,  1.0f, -1.5f),
         };
       
         protected unsafe override void OnLoad()
@@ -107,7 +106,6 @@ namespace SummerPractise
 
             ContainerTexture = Texture.LoadFromFile("Resources/Textures/container2.png");
             ContainerSpecularTexture = Texture.LoadFromFile("Resources/Textures/container2_specular.png");
-            ContainerEmissionTexture = Texture.LoadFromFile("Resources/Textures/matrix.jpg");
 
             LightingShader = new Shader("Shadering/Shaders/VertexShader.glsl", "Shadering/Shaders/FragmentShader.glsl");
             LampShader = new Shader("Shadering/Shaders/VertexShader.glsl", "Shadering/Shaders/Lighting/LightingFragmentShader.glsl");
@@ -173,18 +171,26 @@ namespace SummerPractise
 
             ContainerTexture.Use(TextureUnit.Texture0);
             ContainerSpecularTexture.Use(TextureUnit.Texture1);
-            ContainerEmissionTexture.Use(TextureUnit.Texture2);
 
             LightingShader.SetInt("material.diffuse", 0);
             LightingShader.SetInt("material.specular", 1);
-            LightingShader.SetInt("material.emission", 2);
 
             LightingShader.SetFloat("material.shininess", 32.0f);
             
-            LightingShader.SetVec3("light.ambient", 0.2f, 0.2f, 0.2f);
-            LightingShader.SetVec3("light.diffuse", 0.5f, 0.5f, 0.5f);
+
+            LightingShader.SetVec3("light.position", Camera.Position);
+            LightingShader.SetVec3("light.direction", Camera.Front);
+            LightingShader.SetFloat("light.cutOff", MathF.Cos(MathHelper.DegreesToRadians(12.5f)));
+            LightingShader.SetFloat("light.outerCutOff", MathF.Cos(MathHelper.DegreesToRadians(17.5f)));
+            
+            LightingShader.SetVec3("light.ambient", 0.1f, 0.1f, 0.1f);
+            LightingShader.SetVec3("light.diffuse", 0.8f, 0.8f, 0.8f);
             LightingShader.SetVec3("light.specular", 1.0f, 1.0f, 1.0f);
-            LightingShader.SetVec3("light.position", LightPosition);
+
+            LightingShader.SetFloat("light.constant", 1.0f);
+            LightingShader.SetFloat("light.linear", 0.09f);
+            LightingShader.SetFloat("light.quadratic", 0.032f);
+
 
             LightingShader.SetVec3("viewPos", Camera.Position);
             
@@ -192,9 +198,21 @@ namespace SummerPractise
 
             LightingShader.SetMatrix("view", View);
             LightingShader.SetMatrix("projection", Projecton);
-            LightingShader.SetMatrix("model", Model);
+            
 
-            GL.DrawArrays(PrimitiveType.Triangles, 0, 36);
+            for (int i = 0; i < 10; i++)
+            {
+                float angle = 20 * i;
+                Matrix4 rotation = Matrix4.CreateRotationX(angle * 1.0f);
+                rotation *= Matrix4.CreateRotationY(angle * 0.3f);
+                rotation *= Matrix4.CreateRotationZ(angle * 0.5f);
+
+                Model = Matrix4.Identity * rotation * Matrix4.CreateTranslation(CubePositions[i]);
+
+                LightingShader.SetMatrix("model", Model);
+
+                GL.DrawArrays(PrimitiveType.Triangles, 0, 36);
+            }
   
             GL.BindVertexArray(0);
 
