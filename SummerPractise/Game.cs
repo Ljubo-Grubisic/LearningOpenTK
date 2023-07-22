@@ -14,6 +14,7 @@ using StbImageSharp;
 using SummerPractise.Texturing;
 using System.ComponentModel;
 using System.Xml.Linq;
+using Texture = SummerPractise.Texturing.Texture;
 
 namespace SummerPractise
 {
@@ -29,8 +30,9 @@ namespace SummerPractise
         private Camera Camera;
         private Shader LightingShader;
         private Shader LampShader;
+
         private Texture ContainerTexture;
-        private Texture SmileTexture;
+        private Texture ContainerSpecularTexture;
 
         private Matrix4 Model;
         private Matrix4 View;
@@ -102,6 +104,9 @@ namespace SummerPractise
 
             Camera = new Camera(new Vector3(0, 0, 4), (float)this.Size.X / (float)this.Size.Y, 45);
 
+            ContainerTexture = Texture.LoadFromFile("Resources/Textures/container2.png");
+            ContainerSpecularTexture = Texture.LoadFromFile("Resources/Textures/container2_specular.png");
+                    
             LightingShader = new Shader("Shadering/Shaders/VertexShader.glsl", "Shadering/Shaders/FragmentShader.glsl");
             LampShader = new Shader("Shadering/Shaders/VertexShader.glsl", "Shadering/Shaders/Lighting/LightingFragmentShader.glsl");
 
@@ -124,6 +129,11 @@ namespace SummerPractise
             {
                 int location = LightingShader.GetAttribLocation("aNormal");
                 GL.VertexAttribPointer(location, 3, VertexAttribPointerType.Float, false, sizeof(float) * 8, sizeof(float) * 3);
+                GL.EnableVertexAttribArray(location);
+            }
+            {
+                int location = LightingShader.GetAttribLocation("aTexCoords");
+                GL.VertexAttribPointer(location, 2, VertexAttribPointerType.Float, false, sizeof(float) * 8, sizeof(float) * 6);
                 GL.EnableVertexAttribArray(location);
             }
 
@@ -155,25 +165,22 @@ namespace SummerPractise
             base.OnRenderFrame(args);
             Clear();
 
-            Vector3 lightColor = new Vector3();
-            lightColor.X = MathF.Sin((float)GLFW.GetTime() * 2.0f);
-            lightColor.Y = MathF.Sin((float)GLFW.GetTime() * 0.7f);
-            lightColor.Z = MathF.Sin((float)GLFW.GetTime() * 1.3f);
-
-            Vector3 diffuseColor = lightColor * new Vector3(0.5f);
-            Vector3 ambientColor = diffuseColor * new Vector3(0.2f);
-
             LightingShader.Use();
 
             GL.BindVertexArray(vaoLight);
 
-            LightingShader.SetVec3("material.ambient", 1.0f, 0.5f, 0.31f);
-            LightingShader.SetVec3("material.diffuse", 1.0f, 0.5f, 0.31f);
+            ContainerTexture.Use(TextureUnit.Texture0);
+            ContainerSpecularTexture.Use(TextureUnit.Texture1);
+
+            LightingShader.SetInt("material.diffuse", 0);
+            LightingShader.SetInt("material.specular", 1);
+
             LightingShader.SetVec3("material.specular", 0.5f, 0.5f, 0.5f);
             LightingShader.SetFloat("material.shininess", 32.0f);
 
-            LightingShader.SetVec3("light.ambient", ambientColor);
-            LightingShader.SetVec3("light.diffuse", diffuseColor);
+            
+            LightingShader.SetVec3("light.ambient", 0.2f, 0.2f, 0.2f);
+            LightingShader.SetVec3("light.diffuse", 0.5f, 0.5f, 0.5f);
             LightingShader.SetVec3("light.specular", 1.0f, 1.0f, 1.0f);
             LightingShader.SetVec3("light.position", LightPosition);
 
