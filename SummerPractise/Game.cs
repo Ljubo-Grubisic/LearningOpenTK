@@ -33,6 +33,7 @@ namespace SummerPractise
 
         private Texture ContainerTexture;
         private Texture ContainerSpecularTexture;
+        private Texture ContainerEmissionTexture;
 
         private Matrix4 Model;
         private Matrix4 View;
@@ -106,7 +107,8 @@ namespace SummerPractise
 
             ContainerTexture = Texture.LoadFromFile("Resources/Textures/container2.png");
             ContainerSpecularTexture = Texture.LoadFromFile("Resources/Textures/container2_specular.png");
-                    
+            ContainerEmissionTexture = Texture.LoadFromFile("Resources/Textures/matrix.jpg");
+
             LightingShader = new Shader("Shadering/Shaders/VertexShader.glsl", "Shadering/Shaders/FragmentShader.glsl");
             LampShader = new Shader("Shadering/Shaders/VertexShader.glsl", "Shadering/Shaders/Lighting/LightingFragmentShader.glsl");
 
@@ -171,13 +173,13 @@ namespace SummerPractise
 
             ContainerTexture.Use(TextureUnit.Texture0);
             ContainerSpecularTexture.Use(TextureUnit.Texture1);
+            ContainerEmissionTexture.Use(TextureUnit.Texture2);
 
             LightingShader.SetInt("material.diffuse", 0);
             LightingShader.SetInt("material.specular", 1);
+            LightingShader.SetInt("material.emission", 2);
 
-            LightingShader.SetVec3("material.specular", 0.5f, 0.5f, 0.5f);
             LightingShader.SetFloat("material.shininess", 32.0f);
-
             
             LightingShader.SetVec3("light.ambient", 0.2f, 0.2f, 0.2f);
             LightingShader.SetVec3("light.diffuse", 0.5f, 0.5f, 0.5f);
