@@ -4,19 +4,19 @@ using System.Diagnostics;
 using System.IO;
 using System.Reflection.Metadata;
 using System.Text;
-using SummerPractise.Shadering;
+using Lighting.Shadering;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using StbImageSharp;
-using SummerPractise.Texturing;
+using Lighting.Texturing;
 using System.ComponentModel;
 using System.Xml.Linq;
-using Texture = SummerPractise.Texturing.Texture;
+using Texture = Lighting.Texturing.Texture;
 
-namespace SummerPractise
+namespace Lighting
 {
     internal class Game : GameWindow
     {
@@ -93,7 +93,15 @@ namespace SummerPractise
             new Vector3( 1.5f,  0.2f, -1.5f),
             new Vector3(-1.3f,  1.0f, -1.5f),
         };
-      
+
+        Vector3[] PointLightPositions = {
+            new Vector3( 0.7f, 0.2f, 2.0f),
+            new Vector3( 2.3f, -3.3f, -4.0f),
+            new Vector3(-4.0f, 2.0f, -12.0f),
+            new Vector3( 0.0f, 0.0f, -3.0f)
+        };
+
+
         protected unsafe override void OnLoad()
         { 
             base.OnLoad();
@@ -174,23 +182,42 @@ namespace SummerPractise
 
             LightingShader.SetInt("material.diffuse", 0);
             LightingShader.SetInt("material.specular", 1);
-
             LightingShader.SetFloat("material.shininess", 32.0f);
             
-
-            LightingShader.SetVec3("light.position", Camera.Position);
-            LightingShader.SetVec3("light.direction", Camera.Front);
-            LightingShader.SetFloat("light.cutOff", MathF.Cos(MathHelper.DegreesToRadians(12.5f)));
-            LightingShader.SetFloat("light.outerCutOff", MathF.Cos(MathHelper.DegreesToRadians(17.5f)));
+            // Spot light
+            LightingShader.SetVec3("spotLight.position", Camera.Position);
+            LightingShader.SetVec3("spotLight.direction", Camera.Front);
+            LightingShader.SetFloat("spotLight.cutOff", MathF.Cos(MathHelper.DegreesToRadians(10.0f)));
+            LightingShader.SetFloat("spotLight.outerCutOff", MathF.Cos(MathHelper.DegreesToRadians(12.5f)));
             
-            LightingShader.SetVec3("light.ambient", 0.1f, 0.1f, 0.1f);
-            LightingShader.SetVec3("light.diffuse", 0.8f, 0.8f, 0.8f);
-            LightingShader.SetVec3("light.specular", 1.0f, 1.0f, 1.0f);
+            LightingShader.SetVec3("spotLight.ambient", 0.0f, 0.0f, 0.0f);
+            LightingShader.SetVec3("spotLight.diffuse", 1.0f, 1.0f, 1.0f);
+            LightingShader.SetVec3("spotLight.specular", 1.0f, 1.0f, 1.0f);
 
-            LightingShader.SetFloat("light.constant", 1.0f);
-            LightingShader.SetFloat("light.linear", 0.09f);
-            LightingShader.SetFloat("light.quadratic", 0.032f);
+            LightingShader.SetFloat("spotLight.constant", 1.0f);
+            LightingShader.SetFloat("spotLight.linear", 0.09f);
+            LightingShader.SetFloat("spotLight.quadratic", 0.032f);
 
+            // Direction light
+            LightingShader.SetVec3("dirLight.direction", -0.2f, -1.0f, -0.3f);
+
+            LightingShader.SetVec3("dirLight.ambient", 0.05f, 0.05f, 0.05f);
+            LightingShader.SetVec3("dirLight.diffuse", 0.4f, 0.4f, 0.4f);
+            LightingShader.SetVec3("dirLight.specular", 0.5f, 0.5f, 0.5f);
+
+            // Point light
+            for (int i = 0; i < 4; i++)
+            {
+                LightingShader.SetVec3("pointLights[" + i + "].position", PointLightPositions[i]);
+
+                LightingShader.SetVec3("pointLights[" + i + "].ambient", PointLightPositions[i] * 0.1f);
+                LightingShader.SetVec3("pointLights[" + i + "].diffuse", PointLightPositions[i]);
+                LightingShader.SetVec3("pointLights[" + i + "].specular", PointLightPositions[i]);
+
+                LightingShader.SetFloat("pointLights[" + i + "].constant", 0.5f);
+                LightingShader.SetFloat("pointLights[" + i + "].linear", 0.045f);
+                LightingShader.SetFloat("pointLights[" + i + "].quadratic", 0.016f);
+            }
 
             LightingShader.SetVec3("viewPos", Camera.Position);
             
@@ -221,13 +248,18 @@ namespace SummerPractise
 
             GL.BindVertexArray(vaoLamp);
 
-            Model = Matrix4.CreateScale(0.2f) * Matrix4.CreateTranslation(LightPosition);
-
             LampShader.SetMatrix("view", View);
             LampShader.SetMatrix("projection", Projecton);
-            LampShader.SetMatrix("model", Model);
 
-            GL.DrawArrays(PrimitiveType.Triangles, 0, 36);
+            for (int i = 0; i < PointLightPositions.Length; i++)
+            {
+                Model = Matrix4.CreateScale(0.2f) * Matrix4.CreateTranslation(PointLightPositions[i]);
+
+                LampShader.SetMatrix("model", Model);
+                LampShader.SetVec3("color", PointLightPositions[i]);
+
+                GL.DrawArrays(PrimitiveType.Triangles, 0, 36);
+            }
 
             GL.BindVertexArray(0);
 
@@ -243,7 +275,7 @@ namespace SummerPractise
 
         private void Clear()
         {
-            GL.ClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+            GL.ClearColor(0.02f, 0.02f, 0.02f, 1.0f);
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
         }
     }

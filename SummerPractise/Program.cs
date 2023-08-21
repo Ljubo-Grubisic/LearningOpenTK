@@ -1,7 +1,7 @@
 ﻿using System;
-using SummerPractise.Rendering;
+using Lighting.Rendering;
 
-namespace SummerPractise
+namespace Lighting
 {
     internal class Program
     {

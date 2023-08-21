@@ -5,7 +5,7 @@ using System.Numerics;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 
-namespace LearningOpenTK.Shadering
+namespace Lighting.Shadering
 {
     public class Shader
     {
