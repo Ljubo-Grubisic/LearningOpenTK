@@ -5,16 +5,15 @@ using PixelFormat = OpenTK.Graphics.OpenGL4.PixelFormat;
 using StbImageSharp;
 using System.IO;
 
-namespace Lighting.Texturing
+namespace SummerPractise.ModelLoading
 {
-    public class Texture
+    public static class TextureHelper
     {
-        public readonly int Handle;
-
-        public static Texture LoadFromFile(string path)
+        public static int LoadFromFile(string path)
         {
             int handle = GL.GenTexture();
 
+            // Bind the handle
             GL.ActiveTexture(TextureUnit.Texture0);
             GL.BindTexture(TextureTarget.Texture2D, handle);
 
@@ -35,18 +34,7 @@ namespace Lighting.Texturing
 
             GL.GenerateMipmap(GenerateMipmapTarget.Texture2D);
 
-            return new Texture(handle);
-        }
-
-        public Texture(int glHandle)
-        {
-            Handle = glHandle;
-        }
-
-        public void Use(TextureUnit unit)
-        {
-            GL.ActiveTexture(unit);
-            GL.BindTexture(TextureTarget.Texture2D, Handle);
+            return handle;
         }
     }
 }

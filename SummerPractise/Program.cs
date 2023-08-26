@@ -1,5 +1,7 @@
-﻿using System;
-using Lighting.Rendering;
+﻿using OpenTK.Mathematics;
+using OpenTK.Windowing.Common;
+using OpenTK.Windowing.Desktop;
+using Lighting.Rendering.Display;
 
 namespace Lighting
 {
@@ -7,8 +9,8 @@ namespace Lighting
     {
         static void Main(string[] args)
         {
-            Game game = DisplayManager.CreateGame(1280, 720, "Practise");
-            game.Run();
+            var window = DisplayManager.CreateWindow("Pong", 1280, 720);
+            window.Run();
         }
     }
 }

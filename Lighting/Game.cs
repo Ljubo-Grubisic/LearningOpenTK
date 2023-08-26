@@ -208,11 +208,12 @@ namespace Lighting
 
                 for (int i = 0; i < CubePositions.Length; i++)
                 {
-                    Matrix4 model = 
-                        Matrix4.CreateRotationY(MathF.PI * CubePositions[i].X) *
-                        Matrix4.CreateRotationZ(MathF.PI * CubePositions[i].Y) *
-                        Matrix4.CreateRotationX(MathF.PI * CubePositions[i].Z) * 
-                        Matrix4.CreateTranslation(CubePositions[i]);
+                    float angle = 20 * i;
+                    Matrix4 rotation = Matrix4.CreateRotationX(angle * 1.0f);
+                    rotation *= Matrix4.CreateRotationY(angle * 0.3f);
+                    rotation *= Matrix4.CreateRotationZ(angle * 0.5f);
+
+                    Matrix4 model = rotation * Matrix4.CreateTranslation(CubePositions[i]);
 
                     Shader.SetMatrix("model", model);
 
