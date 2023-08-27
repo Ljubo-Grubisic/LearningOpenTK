@@ -119,7 +119,7 @@ namespace SummerPractise.ModelLoading
                 }
 
                 // Texture coordinates
-                if (mesh.TextureCoordinateChannels[0] != null)
+                if (mesh.TextureCoordinateChannels[0].Count != 0 && mesh.TextureCoordinateChannels[0] != null)
                 {
                     Vector2 texCoords = mesh.TextureCoordinateChannels[0][i].ConvertAssimpVector2();
 

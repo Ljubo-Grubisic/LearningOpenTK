@@ -18,13 +18,27 @@ namespace Lighting
         private Shader LightShader;
 
         private Model Model;
-        private Texture Texture;
+        private Model LightBulb;
 
         Vector3[] PointLightPositions = {
             new Vector3( 0.7f, 0.2f, 2.0f),
             new Vector3( 2.3f, -3.3f, -4.0f),
             new Vector3(-4.0f, 2.0f, -12.0f),
             new Vector3( 0.0f, 0.0f, -3.0f)
+        };
+
+        private Vector3[] BackPackPositions =
+        {
+            new Vector3(0.0f, 0.0f, 0.0f),
+            new Vector3(2.0f, 5.0f, -15.0f),
+            new Vector3(-1.5f, -2.2f, -2.5f),
+            new Vector3(-3.8f, -2.0f, -12.3f),
+            new Vector3( 2.4f, -0.4f, -3.5f),
+            new Vector3(-1.7f, 3.0f, -7.5f),
+            new Vector3( 1.3f, -2.0f, -2.5f),
+            new Vector3( 1.5f, 2.0f, -2.5f),
+            new Vector3( 1.5f, 0.2f, -1.5f),
+            new Vector3(-1.3f, 1.0f, -1.5f),
         };
 
         public Game(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings) : base(gameWindowSettings, nativeWindowSettings)
@@ -41,10 +55,11 @@ namespace Lighting
 
             Camera = new Camera(new Vector3(0, 0, 4), (float)this.Size.X / (float)this.Size.Y, 45);
 
-            Shader = new Shader("../../../Shadering/Shaders/vertexShader.glsl", "../../../Shadering/Shaders/fragmentShader2.glsl");
+            Shader = new Shader("../../../Shadering/Shaders/vertexShader.glsl", "../../../Shadering/Shaders/fragmentShader.glsl");
             LightShader = new Shader("../../../Shadering/Shaders/vertexShader.glsl", "../../../Shadering/Shaders/lightFragmentShader.glsl");
 
-            Model = new Model("Resources/Objects/mig_fbx/mig23mld.FBX");
+            Model = new Model("Resources/Objects/backpack_gltf/scene.gltf");
+            LightBulb = new Model("Resources/Objects/light_bulb/source/light_bulb.obj");
         }
 
         protected override void OnUpdateFrame(FrameEventArgs args)
@@ -64,11 +79,67 @@ namespace Lighting
 
             Shader.SetMatrix("view", Camera.GetViewMatrix());
             Shader.SetMatrix("projection", Camera.GetProjectionMatrix());
-            Shader.SetMatrix("model", Matrix4.Identity * Matrix4.CreateScale(1.0f / 1.0f));
 
+            Shader.SetFloat("material.shininess", 32);
 
-            Model.Draw(Shader);
+            // Point light  
+            for (int i = 0; i < PointLightPositions.Length; i++)
+            {
+                Shader.SetVec3("pointLights[" + i + "].ambient", 0.2f, 0.2f, 0.2f);
+                Shader.SetVec3("pointLights[" + i + "].diffuse", 0.5f, 0.5f, 0.5f);
+                Shader.SetVec3("pointLights[" + i + "].specular", 1.0f, 1.0f, 1.0f);
+                
+                Shader.SetVec3("pointLights[" + i + "].position", PointLightPositions[i]);
+                
+                Shader.SetFloat("pointLights[" + i + "].constant", 2.0f);
+                Shader.SetFloat("pointLights[" + i + "].linear", 0.18f);
+                Shader.SetFloat("pointLights[" + i + "].quadratic", 0.064f);
+            }
+
+            // Directional light
+            Shader.SetVec3("dirLight.ambient", 0.1f, 0.1f, 0.1f);
+            Shader.SetVec3("dirLight.diffuse", 0.10f, 0.10f, 0.10f);
+            Shader.SetVec3("dirLight.specular", 0.75f, 0.75f, 0.75f);
             
+            Shader.SetVec3("dirLight.direction", -0.2f, -1.0f, -0.3f);
+
+            // Spot Light
+            Shader.SetVec3("spotLight.position", Camera.Position);
+            Shader.SetVec3("spotLight.direction", Camera.Front);
+            Shader.SetFloat("spotLight.cutOff", MathF.Cos(MathHelper.DegreesToRadians(10.0f)));
+            Shader.SetFloat("spotLight.outerCutOff", MathF.Cos(MathHelper.DegreesToRadians(12.5f)));
+
+            Shader.SetVec3("spotLight.ambient", 0.0f, 0.0f, 0.0f);
+            Shader.SetVec3("spotLight.diffuse", 1.0f, 1.0f, 1.0f);
+            Shader.SetVec3("spotLight.specular", 1.0f, 1.0f, 1.0f);
+
+            Shader.SetFloat("spotLight.constant", 1.0f);
+            Shader.SetFloat("spotLight.linear", 0.09f);
+            Shader.SetFloat("spotLight.quadratic", 0.032f);
+
+
+            Shader.SetVec3("viewPos", Camera.Position);
+
+            for (int i = 0; i < BackPackPositions.Length; i++)
+            {
+                Shader.SetMatrix("model", Matrix4.Identity * Matrix4.CreateScale(1.0f / 200.0f) * Matrix4.CreateTranslation(BackPackPositions[i]));
+
+                Model.Draw(Shader);
+            }
+
+            LightShader.Use();
+
+            LightShader.SetMatrix("view", Camera.GetViewMatrix());
+            LightShader.SetMatrix("projection", Camera.GetProjectionMatrix());
+
+            for (int i = 0; i < PointLightPositions.Length; i++)
+            {
+                LightShader.SetMatrix("model", Matrix4.CreateScale(1.0f / 10.0f) * Matrix4.CreateTranslation(PointLightPositions[i]));
+
+                LightBulb.Draw(LightShader);
+            }
+            
+
             SwapBuffers();
         }
 

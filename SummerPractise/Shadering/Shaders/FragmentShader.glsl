@@ -6,7 +6,6 @@ struct Material{
 	sampler2D texture_specular1;
 	sampler2D texture_specular2;
 
-
 	float shininess;
 };
 
@@ -133,18 +132,17 @@ vec3 CalculateSpotLight(SpotLight light, Material material, vec3 normal, vec3 vi
 
 void main()
 {
-	//vec3 normal = normalize(Normal);
-	//vec3 viewDir = normalize(viewPos - FragPos);
-	//
-	//vec3 result = CalculateSpotLight(spotLight, material, normal, viewDir);
-	//
-	//result += CalculateDirLight(dirLight, material, normal, viewDir);
+	vec3 normal = normalize(Normal);
+	vec3 viewDir = normalize(viewPos - FragPos);
+	
+	vec3 result = CalculateSpotLight(spotLight, material, normal, viewDir);
+	
+	result += CalculateDirLight(dirLight, material, normal, viewDir);
 	//
 	//for(int i = 0; i < numPointLights; i++){
 	//	result += CalculatePointLight(pointLights[i], material, normal, viewDir);
 	//}
 
-	vec3 result = texture(material.texture_diffuse1, TexCoords).rgb;
 
 	outputColor = vec4(result, 1.0);
 }
