@@ -9,7 +9,7 @@ namespace Lighting
     {
         static void Main(string[] args)
         {
-            var window = DisplayManager.CreateWindow("Pong", 1280, 720);
+            var window = DisplayManager.CreateWindow("Model", 1280, 720);
             window.Run();
         }
     }

@@ -6,37 +6,39 @@ using OpenTK.Windowing.Desktop;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using Image = SummerPractise.Texturing.Texture;
 
 namespace SummerPractise.ModelLoading
 {
     internal class Mesh
     {
-        internal List<Vertex> verticies;
-        internal List<int> indicies;
-        internal List<Texture> textures;
+        internal List<Vertex> Vertices;
+        internal List<int> Indices;
+        internal List<Texture> Textures;
 
         private int VAO, VBO, EBO;
         
-        internal Mesh(List<Vertex> verticies, List<int> indicies, List<Texture> textures)
+        internal Mesh(List<Vertex> vertices, List<int> indices, List<Texture> textures)
         {
-            this.verticies = verticies;
-            this.indicies = indicies;
-            this.textures = textures;
+            this.Vertices = vertices;
+            this.Indices = indices;
+            this.Textures = textures;
 
-            setupMesh();
+            SetupMesh();
         }
 
         internal void Draw(Shader shader)
         {
             int diffuseNumber = 1, specularNumber = 1;
 
-            for (int i = 0; i < textures.Count; i++)
+            for (int i = 0; i < Textures.Count; i++)
             {
                 GL.ActiveTexture((TextureUnit)i);
 
                 string number = "";
-                string name = textures[i].type;
+                string name = Textures[i].type;
                 if (name == "texture_diffuse")
                 {
                     number = diffuseNumber.ToString();
@@ -47,18 +49,17 @@ namespace SummerPractise.ModelLoading
                     number = specularNumber.ToString();
                     specularNumber++;
                 }
-
-                shader.SetFloat("material." + name + number, i);
-                GL.BindTexture(TextureTarget.Texture2D, textures[i].id);
+            
+                shader.SetInt("material." + name + number, i);
+                GL.BindTexture(TextureTarget.Texture2D, Textures[i].id);
             }
-            GL.ActiveTexture(TextureUnit.Texture0);
 
             GL.BindVertexArray(VAO);
-            GL.DrawElements(BeginMode.Triangles, indicies.Count, DrawElementsType.UnsignedInt, 0);
+            GL.DrawElements(BeginMode.Triangles, Indices.Count, DrawElementsType.UnsignedInt, 0);
             GL.BindVertexArray(0);
         }
 
-        private unsafe void setupMesh()
+        private unsafe void SetupMesh()
         {
             this.VAO = GL.GenVertexArray();
             this.VBO = GL.GenBuffer();
@@ -67,20 +68,20 @@ namespace SummerPractise.ModelLoading
             GL.BindVertexArray(VAO);
 
             GL.BindBuffer(BufferTarget.ArrayBuffer, VBO);
-            GL.BufferData(BufferTarget.ArrayBuffer, verticies.Count * sizeof(Vertex), verticies.ToArray(), BufferUsageHint.StaticDraw);
+            GL.BufferData(BufferTarget.ArrayBuffer, Vertices.Count * sizeof(Vertex), Vertices.ToArray(), BufferUsageHint.StaticDraw);
 
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, EBO);
-            GL.BufferData(BufferTarget.ElementArrayBuffer, indicies.Count * sizeof(uint), indicies.ToArray(), BufferUsageHint.StaticDraw);
+            GL.BufferData(BufferTarget.ElementArrayBuffer, Indices.Count * sizeof(int), Indices.ToArray(), BufferUsageHint.StaticDraw);
 
             GL.EnableVertexAttribArray(0);
-            GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, sizeof(Vertex), 0);
-
+            GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, sizeof(Vertex), Marshal.OffsetOf<Vertex>(nameof(Vertex.Position)));
+            
             GL.EnableVertexAttribArray(1);
-            GL.VertexAttribPointer(1, 3, VertexAttribPointerType.Float, false, sizeof(Vertex), Marshal.OffsetOf<Vertex>("Position"));
-
+            GL.VertexAttribPointer(1, 3, VertexAttribPointerType.Float, false, sizeof(Vertex), Marshal.OffsetOf<Vertex>(nameof(Vertex.Normal)));
+            
             GL.EnableVertexAttribArray(2);
-            GL.VertexAttribPointer(2, 2, VertexAttribPointerType.Float, false, sizeof(Vertex), Marshal.OffsetOf<Vertex>("Position").ToInt32() + Marshal.OffsetOf<Vertex>("Normal").ToInt32());
-        
+            GL.VertexAttribPointer(2, 2, VertexAttribPointerType.Float, false, sizeof(Vertex), Marshal.OffsetOf<Vertex>(nameof(Vertex.TexCoords)));
+
             GL.BindVertexArray(0);
         }
     }
