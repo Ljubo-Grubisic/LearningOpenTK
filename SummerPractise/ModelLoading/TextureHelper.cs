@@ -6,7 +6,7 @@ using StbImageSharp;
 using System.IO;
 using System.Collections.Generic;
 
-namespace SummerPractise.ModelLoading
+namespace SummerPractice.ModelLoading
 {
     internal static class TextureHelper
     {

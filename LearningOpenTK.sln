@@ -5,9 +5,9 @@ VisualStudioVersion = 17.4.33205.214
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LearningOpenTK", "LearningOpenTK\LearningOpenTK.csproj", "{DCE143CE-098C-4907-9943-B40EDDEC9A98}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SummerPractise", "SummerPractise\SummerPractise.csproj", "{CA95A09C-8C9C-4D58-B676-9DD8F315FCFF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SummerPractice", "SummerPractise\SummerPractice.csproj", "{CA95A09C-8C9C-4D58-B676-9DD8F315FCFF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lighting", "Lighting\Lighting.csproj", "{6F6B255E-E43B-4A76-899D-D31FF75E2546}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lighting", "Lighting\Lighting.csproj", "{6F6B255E-E43B-4A76-899D-D31FF75E2546}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

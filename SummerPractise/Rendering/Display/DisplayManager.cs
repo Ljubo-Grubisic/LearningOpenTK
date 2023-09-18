@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Lighting.Rendering.Display
+namespace SummerPractice.Rendering
 {
     public static class DisplayManager
     {

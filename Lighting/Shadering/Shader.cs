@@ -6,7 +6,7 @@ using OpenTK.Mathematics;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using Vector3 = OpenTK.Mathematics.Vector3;
 
-namespace Lighting.Shadering
+namespace SummerPractice.Shadering
 {
     public class Shader
     {

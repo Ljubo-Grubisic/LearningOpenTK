@@ -1,7 +1,7 @@
 ﻿using Assimp;
 using Assimp.Configs;
 using Assimp.Unmanaged;
-using Lighting.Shadering;
+using SummerPractice.Shadering;
 using OpenTK.Mathematics;
 using System;
 using System.Collections.Generic;
@@ -11,7 +11,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using AssimpMesh = Assimp.Mesh;
 
-namespace SummerPractise.ModelLoading
+namespace SummerPractice.ModelLoading
 {
     public static class Extensions
     {

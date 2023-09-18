@@ -1,14 +1,13 @@
-﻿using Lighting.Shadering;
+﻿using SummerPractice.Shadering;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
 using OpenTK.Windowing.GraphicsLibraryFramework;
-using SummerPractise.ModelLoading;
-using Texture = SummerPractise.Texturing.Texture;
+using SummerPractice.ModelLoading;
 using System;
 
-namespace Lighting
+namespace SummerPractice
 {
     public class Game : GameWindow
     {
@@ -58,7 +57,8 @@ namespace Lighting
             Shader = new Shader("../../../Shadering/Shaders/vertexShader.glsl", "../../../Shadering/Shaders/fragmentShader.glsl");
             LightShader = new Shader("../../../Shadering/Shaders/vertexShader.glsl", "../../../Shadering/Shaders/lightFragmentShader.glsl");
 
-            Model = new Model("Resources/Objects/backpack_gltf/scene.gltf");
+            //Model = new Model("Resources/Objects/backpack_gltf/scene.gltf");
+            Model = new Model("Resources/Objects/mig_gltf/scene.gltf");
             LightBulb = new Model("Resources/Objects/light_bulb/source/light_bulb.obj");
         }
 
@@ -120,9 +120,11 @@ namespace Lighting
 
             Shader.SetVec3("viewPos", Camera.Position);
 
-            for (int i = 0; i < BackPackPositions.Length; i++)
+            for (int i = 0; i < 1; i++)
             {
-                Shader.SetMatrix("model", Matrix4.Identity * Matrix4.CreateScale(1.0f / 200.0f) * Matrix4.CreateTranslation(BackPackPositions[i]));
+                Shader.SetMatrix("model", Matrix4.Identity * Matrix4.CreateScale(2.0f / 1.0f) * Matrix4.CreateTranslation(BackPackPositions[i]));
+
+                //GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Line);
 
                 Model.Draw(Shader);
             }

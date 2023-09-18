@@ -1,4 +1,4 @@
-﻿using Lighting.Shadering;
+﻿using SummerPractice.Shadering;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
@@ -8,9 +8,8 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using Image = SummerPractise.Texturing.Texture;
 
-namespace SummerPractise.ModelLoading
+namespace SummerPractice.ModelLoading
 {
     internal class Mesh
     {

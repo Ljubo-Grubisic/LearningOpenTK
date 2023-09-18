@@ -1,5 +1,5 @@
-﻿using Lighting.Shadering;
-using Lighting.Texturing;
+﻿using SummerPractice.Shadering;
+using SummerPractice.Texturing;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
@@ -75,7 +75,7 @@ using System;
 //                1.0f, 0.0f, 0.0f,       0.0f, 0.0f,  // Bottom left
             //};
 
-namespace Lighting
+namespace SummerPractice
 {
     public class Game : GameWindow
     {

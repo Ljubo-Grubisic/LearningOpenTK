@@ -5,7 +5,7 @@ using PixelFormat = OpenTK.Graphics.OpenGL4.PixelFormat;
 using StbImageSharp;
 using System.IO;
 
-namespace Lighting.Texturing
+namespace SummerPractice.Texturing
 {
     public class Texture
     {
