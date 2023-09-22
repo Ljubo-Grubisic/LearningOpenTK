@@ -1,9 +1,9 @@
 ﻿using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
-using SummerPractice.Rendering.Display;
+using LearningOpenTK.Rendering.Display;
 
-namespace SummerPractice
+namespace LearningOpenTK
 {
     internal class Program
     {

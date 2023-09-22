@@ -1,5 +1,5 @@
-﻿using SummerPractice.Shadering;
-using SummerPractice.Texturing;
+﻿using LearningOpenTK.Shadering;
+using LearningOpenTK.Texturing;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
@@ -7,75 +7,7 @@ using OpenTK.Windowing.Desktop;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using System;
 
-//Matrix4 translation = Matrix4.CreateTranslation(0.0f, 0.0f, 0.0f);
-//Matrix4 scale = Matrix4.CreateScale(1.0f);
-//Matrix4 rotation = Matrix4.CreateRotationZ(MathF.PI / 0.5f * MathF.Sin((float)GLFW.GetTime()));
-//Matrix4 transformation = rotation * translation * scale;
-//shader.SetMatrix("transformation", transformation);
-
-//float[] vertexData =
-//            {
-//                // Front 
-//                0.0f, 0.0f, 0.0f,       0.0f, 0.0f,  // Bottom left
-//                1.0f, 0.0f, 0.0f,       1.0f, 0.0f,  // Bottom right
-//                1.0f, 1.0f, 0.0f,       1.0f, 1.0f,  // Top right
-
-//                1.0f, 1.0f, 0.0f,       1.0f, 1.0f,  // Top right
-//                0.0f, 1.0f, 0.0f,       0.0f, 1.0f,  // Top left
-//                0.0f, 0.0f, 0.0f,       0.0f, 0.0f,  // Bottom left
-
-
-//                // Back
-//                0.0f, 0.0f, 1.0f,       0.0f, 0.0f,  // Bottom left
-//                1.0f, 0.0f, 1.0f,       1.0f, 0.0f,  // Bottom right
-//                1.0f, 1.0f, 1.0f,       1.0f, 1.0f,  // Top right
-
-//                1.0f, 1.0f, 1.0f,       1.0f, 1.0f,  // Top right
-//                0.0f, 1.0f, 1.0f,       0.0f, 1.0f,  // Top left
-//                0.0f, 0.0f, 1.0f,       0.0f, 0.0f,  // Bottom left
-
-
-//                // Bottom
-//                0.0f, 0.0f, 1.0f,       0.0f, 0.0f,  // Bottom left
-//                1.0f, 0.0f, 1.0f,       1.0f, 0.0f,  // Bottom right
-//                1.0f, 0.0f, 0.0f,       1.0f, 1.0f,  // Top right
-
-//                1.0f, 0.0f, 0.0f,       1.0f, 1.0f,  // Top right
-//                0.0f, 0.0f, 0.0f,       0.0f, 1.0f,  // Top left
-//                0.0f, 0.0f, 1.0f,       0.0f, 0.0f,  // Bottom left
-
-
-//                // Top
-//                0.0f, 1.0f, 0.0f,       0.0f, 0.0f,  // Bottom left
-//                1.0f, 1.0f, 0.0f,       1.0f, 0.0f,  // Bottom right
-//                1.0f, 1.0f, 1.0f,       1.0f, 1.0f,  // Top right
-
-//                1.0f, 1.0f, 1.0f,       1.0f, 1.0f,  // Top right
-//                0.0f, 1.0f, 1.0f,       0.0f, 1.0f,  // Top left
-//                0.0f, 1.0f, 0.0f,       0.0f, 0.0f,  // Bottom left
-
-
-//                // Left
-//                0.0f, 0.0f, 0.0f,       0.0f, 0.0f,  // Bottom left
-//                0.0f, 0.0f, 1.0f,       1.0f, 0.0f,  // Bottom right
-//                0.0f, 1.0f, 1.0f,       1.0f, 1.0f,  // Top right
-
-//                0.0f, 1.0f, 1.0f,       1.0f, 1.0f,  // Top right
-//                0.0f, 1.0f, 0.0f,       0.0f, 1.0f,  // Top left
-//                0.0f, 0.0f, 0.0f,       0.0f, 0.0f,  // Bottom left
-
-
-//                // Right
-//                1.0f, 0.0f, 0.0f,       0.0f, 0.0f,  // Bottom left
-//                1.0f, 0.0f, 1.0f,       1.0f, 0.0f,  // Bottom right
-//                1.0f, 1.0f, 1.0f,       1.0f, 1.0f,  // Top right
-
-//                1.0f, 1.0f, 1.0f,       1.0f, 1.0f,  // Top right
-//                1.0f, 1.0f, 0.0f,       0.0f, 1.0f,  // Top left
-//                1.0f, 0.0f, 0.0f,       0.0f, 0.0f,  // Bottom left
-            //};
-
-namespace SummerPractice
+namespace LearningOpenTK
 {
     public class Game : GameWindow
     {

@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace SummerPractice.Rendering.Display
+namespace LearningOpenTK.Rendering.Display
 {
     public static class DisplayManager
     {

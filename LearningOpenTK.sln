@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SummerPractice", "SummerPra
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lighting", "Lighting\Lighting.csproj", "{6F6B255E-E43B-4A76-899D-D31FF75E2546}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheBookOfShaders", "TheBookOfShaders\TheBookOfShaders.csproj", "{4ED4ABFF-6558-4639-9265-149AD778413F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{6F6B255E-E43B-4A76-899D-D31FF75E2546}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6F6B255E-E43B-4A76-899D-D31FF75E2546}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6F6B255E-E43B-4A76-899D-D31FF75E2546}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4ED4ABFF-6558-4639-9265-149AD778413F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4ED4ABFF-6558-4639-9265-149AD778413F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4ED4ABFF-6558-4639-9265-149AD778413F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4ED4ABFF-6558-4639-9265-149AD778413F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

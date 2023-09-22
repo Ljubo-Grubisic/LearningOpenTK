@@ -1,11 +1,8 @@
-﻿using OpenTK.Mathematics;
-using OpenTK.Windowing.Desktop;
+﻿using OpenTK.Windowing.Desktop;
 using OpenTK.Windowing.GraphicsLibraryFramework;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using Monitor = OpenTK.Windowing.GraphicsLibraryFramework.Monitor;
 
-namespace Lighting.Rendering.Display
+namespace TheBookOfShaders.Rendering.Display
 {
     public static class DisplayManager
     {

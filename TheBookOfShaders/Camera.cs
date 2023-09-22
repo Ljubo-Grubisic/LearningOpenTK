@@ -1,11 +1,6 @@
-﻿using OpenTK.Graphics.OpenGL;
-using OpenTK.Mathematics;
-using OpenTK.Windowing.GraphicsLibraryFramework;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using OpenTK.Windowing.GraphicsLibraryFramework;
 
-namespace Lighting
+namespace TheBookOfShaders
 {
     internal class Camera
     {
