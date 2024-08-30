@@ -105,7 +105,7 @@ vec3 CalculateDirLight(DirLight light, Material material, vec3 normal, vec3 view
 };
 
 vec3 CalculateSpotLight(SpotLight light, Material material, vec3 normal, vec3 viewDir){
-	 vec3 lightDir = normalize(light.position - FragPos);
+	vec3 lightDir = normalize(light.position - FragPos);
     // diffuse shading
     float diff = max(dot(normal, lightDir), 0.0);
     // specular shading
@@ -138,11 +138,10 @@ void main()
 	vec3 result = CalculateSpotLight(spotLight, material, normal, viewDir);
 	
 	result += CalculateDirLight(dirLight, material, normal, viewDir);
-	//
-	//for(int i = 0; i < numPointLights; i++){
-	//	result += CalculatePointLight(pointLights[i], material, normal, viewDir);
-	//}
-
+	
+	for(int i = 0; i < numPointLights; i++){
+		result += CalculatePointLight(pointLights[i], material, normal, viewDir);
+	}
 
 	outputColor = vec4(result, 1.0);
 }

@@ -9,7 +9,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SummerPractice", "SummerPra
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lighting", "Lighting\Lighting.csproj", "{6F6B255E-E43B-4A76-899D-D31FF75E2546}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheBookOfShaders", "TheBookOfShaders\TheBookOfShaders.csproj", "{4ED4ABFF-6558-4639-9265-149AD778413F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TheBookOfShaders", "TheBookOfShaders\TheBookOfShaders.csproj", "{4ED4ABFF-6558-4639-9265-149AD778413F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SummerPractice2", "SummerPractice2", "{832B3CB7-E8F1-4241-B825-DA09A18B4B23}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameEngine", "GameEngine\GameEngine.csproj", "{77BE7763-BE53-44BA-BB2E-9C140046879A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Game", "Game\Game.csproj", "{16DECFE1-F867-4557-B350-95C423E66DAC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,9 +39,21 @@ Global
 		{4ED4ABFF-6558-4639-9265-149AD778413F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4ED4ABFF-6558-4639-9265-149AD778413F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4ED4ABFF-6558-4639-9265-149AD778413F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{77BE7763-BE53-44BA-BB2E-9C140046879A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77BE7763-BE53-44BA-BB2E-9C140046879A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77BE7763-BE53-44BA-BB2E-9C140046879A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77BE7763-BE53-44BA-BB2E-9C140046879A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{16DECFE1-F867-4557-B350-95C423E66DAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16DECFE1-F867-4557-B350-95C423E66DAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16DECFE1-F867-4557-B350-95C423E66DAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16DECFE1-F867-4557-B350-95C423E66DAC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{77BE7763-BE53-44BA-BB2E-9C140046879A} = {832B3CB7-E8F1-4241-B825-DA09A18B4B23}
+		{16DECFE1-F867-4557-B350-95C423E66DAC} = {832B3CB7-E8F1-4241-B825-DA09A18B4B23}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CD3C53E0-1244-40D8-8C38-860CAEA17A6A}

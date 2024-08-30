@@ -10,41 +10,42 @@ using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using AssimpMesh = Assimp.Mesh;
+using AssimpTextureType = Assimp.TextureType;
 
 namespace SummerPractice.ModelLoading
 {
-    public static class Extensions
+    internal static class Extensions
     {
-        public static Vector2 ConvertAssimpVector2(this Vector3D AssimpVector)
+        internal static Vector2 ConvertAssimpVector2(this Vector3D AssimpVector)
         {
             // Reinterpret the assimp vector into an OpenTK vector.
             return Unsafe.As<Vector3D, Vector2>(ref AssimpVector);
         }
 
-        public static Vector3 ConvertAssimpVector3(this Vector3D AssimpVector)
+        internal static Vector3 ConvertAssimpVector3(this Vector3D AssimpVector)
         {
             // Reinterpret the assimp vector into an OpenTK vector.
             return Unsafe.As<Vector3D, Vector3>(ref AssimpVector);
         }
 
-        public static Matrix4 ConvertAssimpMatrix4(this Matrix4x4 AssimpMatrix)
+        internal static Matrix4 ConvertAssimpMatrix4(this Matrix4x4 AssimpMatrix)
         {
             // Take the column-major assimp matrix and convert it to a row-major OpenTK matrix.
             return Matrix4.Transpose(Unsafe.As<Matrix4x4, Matrix4>(ref AssimpMatrix));
         }
     }
 
-    internal class Model
+    public class Model
     {
         private List<Mesh> meshes = new List<Mesh>();
         private string directory;
 
-        internal Model(string path)
+        public Model(string path)
         {
             LoadModel(path);
         }
 
-        internal void Draw(Shader shader)
+        public void Draw(Shader shader)
         {
             for (int i = 0; i < meshes.Count; i++)
             {
@@ -143,16 +144,16 @@ namespace SummerPractice.ModelLoading
             if (mesh.MaterialIndex >= 0)
             {
                 Material material = scene.Materials[mesh.MaterialIndex];
-                List<Texture> diffuseMaps = LoadMaterialTextures(material, TextureType.Diffuse, "texture_diffuse");
+                List<Texture> diffuseMaps = LoadMaterialTextures(material, AssimpTextureType.Diffuse);
                 textures.InsertRange(textures.Count, diffuseMaps);
-                List<Texture> specularMaps = LoadMaterialTextures(material, TextureType.Specular, "texture_specular");
+                List<Texture> specularMaps = LoadMaterialTextures(material, AssimpTextureType.Specular);
                 textures.InsertRange(textures.Count, specularMaps);
             }
 
             return new Mesh(vertices, indices, textures);
         }
 
-        private List<Texture> LoadMaterialTextures(Material material, TextureType type, string typeName)
+        private List<Texture> LoadMaterialTextures(Material material, AssimpTextureType type)
         {
             List<Texture> textures = new List<Texture>();
 
@@ -162,7 +163,7 @@ namespace SummerPractice.ModelLoading
                 bool skip = !material.GetMaterialTexture(type, i, out textureSlot);
                 for (int j = 0; j < textures.Count; j++)
                 {
-                    if (textures[j].path == textureSlot.FilePath)
+                    if (textures[j].Path == textureSlot.FilePath)
                     {
                         textures.Add(textures[j]);
                         skip = true;
@@ -172,12 +173,7 @@ namespace SummerPractice.ModelLoading
 
                 if (!skip)
                 {
-                    Texture texture = new Texture()
-                    {
-                        id = TextureHelper.LoadFromFile(directory + textureSlot.FilePath),
-                        type = typeName,
-                        path = textureSlot.FilePath
-                    };
+                    Texture texture = Texture.LoadFromFile(this.directory + textureSlot.FilePath, (TextureType)type);
                     textures.Add(texture);
                 }
             }

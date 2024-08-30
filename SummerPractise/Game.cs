@@ -19,6 +19,8 @@ namespace SummerPractice
         private Model Model;
         private Model LightBulb;
 
+        private bool WireFrameMode = false;
+
         Vector3[] PointLightPositions = {
             new Vector3( 0.7f, 0.2f, 2.0f),
             new Vector3( 2.3f, -3.3f, -4.0f),
@@ -65,7 +67,21 @@ namespace SummerPractice
         protected override void OnUpdateFrame(FrameEventArgs args)
         {
             base.OnUpdateFrame(args);
-            
+
+            if (this.IsKeyPressed(Keys.P))
+            {
+                if (WireFrameMode)
+                {
+                    GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Fill);
+                    WireFrameMode = false;
+                }
+                else
+                {
+                    GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Line);
+                    WireFrameMode = true;
+                }
+            }
+
             Camera.UpdateKeys(MouseState, KeyboardState, (float)args.Time);
         }
 
@@ -108,11 +124,11 @@ namespace SummerPractice
             Shader.SetVec3("spotLight.direction", Camera.Front);
             Shader.SetFloat("spotLight.cutOff", MathF.Cos(MathHelper.DegreesToRadians(10.0f)));
             Shader.SetFloat("spotLight.outerCutOff", MathF.Cos(MathHelper.DegreesToRadians(12.5f)));
-
+            
             Shader.SetVec3("spotLight.ambient", 0.0f, 0.0f, 0.0f);
             Shader.SetVec3("spotLight.diffuse", 1.0f, 1.0f, 1.0f);
             Shader.SetVec3("spotLight.specular", 1.0f, 1.0f, 1.0f);
-
+            
             Shader.SetFloat("spotLight.constant", 1.0f);
             Shader.SetFloat("spotLight.linear", 0.09f);
             Shader.SetFloat("spotLight.quadratic", 0.032f);

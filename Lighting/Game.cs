@@ -172,9 +172,9 @@ namespace Lighting
                     Shader.SetVec3("pointLights[" + i +"].ambient", 0.2f, 0.2f, 0.2f);
                     Shader.SetVec3("pointLights[" + i +"].diffuse", 0.5f, 0.5f, 0.5f);
                     Shader.SetVec3("pointLights[" + i +"].specular", 1.0f, 1.0f, 1.0f);
-
+                    
                     Shader.SetVec3("pointLights[" + i + "].position", PointLightPositions[i]);
-
+                    
                     Shader.SetFloat("pointLights[" + i + "].constant", 2.0f);
                     Shader.SetFloat("pointLights[" + i + "].linear", 0.18f);
                     Shader.SetFloat("pointLights[" + i + "].quadratic", 0.064f);
@@ -203,8 +203,6 @@ namespace Lighting
 
 
                 Shader.SetVec3("viewPos", Camera.Position);
-
-                Random random = new Random();
 
                 for (int i = 0; i < CubePositions.Length; i++)
                 {

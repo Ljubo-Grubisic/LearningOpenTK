@@ -11,6 +11,13 @@ using System.Runtime.InteropServices;
 
 namespace SummerPractice.ModelLoading
 {
+    internal struct Vertex
+    {
+        internal Vector3 Position;
+        internal Vector3 Normal;
+        internal Vector2 TexCoords;
+    }
+
     internal class Mesh
     {
         internal List<Vertex> Vertices;
@@ -37,20 +44,23 @@ namespace SummerPractice.ModelLoading
                 GL.ActiveTexture((TextureUnit)i);
 
                 string number = "";
-                string name = Textures[i].type;
-                if (name == "texture_diffuse")
+                string name = "";
+                TextureType type = Textures[i].Type;
+                if (type == TextureType.Diffuse)
                 {
+                    name = "texture_diffuse";
                     number = diffuseNumber.ToString();
                     diffuseNumber++;
                 }
-                else if (name == "texture_specular")
+                else if (type == TextureType.Specular)
                 {
+                    name = "texture_specular";
                     number = specularNumber.ToString();
                     specularNumber++;
                 }
             
                 shader.SetInt("material." + name + number, i);
-                GL.BindTexture(TextureTarget.Texture2D, Textures[i].id);
+                GL.BindTexture(TextureTarget.Texture2D, Textures[i].Handle);
             }
 
             GL.BindVertexArray(VAO);
@@ -83,19 +93,5 @@ namespace SummerPractice.ModelLoading
 
             GL.BindVertexArray(0);
         }
-    }
-
-    internal struct Vertex
-    {
-        internal Vector3 Position;
-        internal Vector3 Normal;
-        internal Vector2 TexCoords;
-    }
-
-    internal struct Texture
-    {
-        internal int id;
-        internal string type;
-        internal string path;
     }
 }
