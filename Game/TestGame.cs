@@ -10,58 +10,67 @@ using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
 using AbstractGame = GameEngine.MainLooping.Game;
 using OpenTK.Windowing.GraphicsLibraryFramework;
-using OpenTK.Graphics.OpenGL;
+using OpenTK.Graphics.OpenGL4;
 
 namespace Game
 {
     public class TestGame : AbstractGame
     {
+        float[] squareVertices =
+        {
+            -0.5f, -0.5f, -0.0f,  0.0f, 0.0f,
+             0.5f, -0.5f, -0.0f,  1.0f, 0.0f,
+             0.5f,  0.5f, -0.0f,  1.0f, 1.0f,
+             0.5f,  0.5f, -0.0f,  1.0f, 1.0f,
+            -0.5f,  0.5f, -0.0f,  0.0f, 1.0f,
+            -0.5f, -0.5f, -0.0f,  0.0f, 0.0f,
+        };
         float[] cubeVertices = {
-        // positions          // texture Coords
-        -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
-         0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
-         0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-         0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+            // positions          // texture Coords
+            -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+             0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
+             0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+             0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+            -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+            -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
 
-        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-         0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-         0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-         0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-        -0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
-        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+            -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+             0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+             0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+             0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+            -0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
+            -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
 
-        -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-        -0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-        -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+            -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+            -0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+            -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+            -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+            -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+            -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
 
-         0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-         0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-         0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-         0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-         0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-         0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+             0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+             0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+             0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+             0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+             0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+             0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
 
-        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-         0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
-         0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-         0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+            -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+             0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
+             0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+             0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+            -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+            -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
 
-        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-         0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-         0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-         0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-        -0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
-        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f
-    };
+            -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+             0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+             0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+             0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+            -0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
+            -0.5f,  0.5f, -0.5f,  0.0f, 1.0f
+        };
         float[] planeVertices = {
-        // positions          // texture Coords (note we set these higher than 1 (together with GL_REPEAT as texture wrapping mode). this will cause the floor texture to repeat)
+            // positions          // texture Coords (note we set these higher than 1 (together with GL_REPEAT as texture wrapping mode). this will cause the floor texture to repeat)
              5.0f, -0.5f,  5.0f,  2.0f, 0.0f,
             -5.0f, -0.5f,  5.0f,  0.0f, 0.0f,
             -5.0f, -0.5f, -5.0f,  0.0f, 2.0f,
@@ -71,16 +80,26 @@ namespace Game
              5.0f, -0.5f, -5.0f,  2.0f, 2.0f
         };
 
+        Vector3[] VegetationPositions =
+        {
+            new Vector3(-1.5f, 0.0f, -0.48f),
+            new Vector3( 1.5f, 0.0f, 0.51f),
+            new Vector3( 0.0f, 0.0f, 0.7f),
+            new Vector3(-0.3f, 0.0f, -2.3f),
+            new Vector3( 0.5f, 0.0f, -0.6f)
+        };
         
 
         private Shader Shader;
         private Shader OutlineShader;
         private Shader LightShader;
 
-        private int cubeVao, cubeVbo, plainVao, plainVbo;
+        private int cubeVao, cubeVbo, plainVao, plainVbo, vegetationVao, vegetationVbo;
 
-        private Texture Brick;
-        private Texture Plank;
+        private Texture BrickTexture;
+        private Texture PlankTexture;
+        private Texture GrassTexture;
+        private Texture WindowTexture;
 
         private bool WireFrameMode = false;
 
@@ -106,8 +125,10 @@ namespace Game
        
         protected override void OnLoadTextures()
         {
-            Brick = Texture.LoadFromFile("Resources/Textures/brickTexture.png");
-            Plank = Texture.LoadFromFile("Resources/Textures/container.png");
+            BrickTexture = Texture.LoadFromFile("Resources/Textures/container2.png");
+            PlankTexture = Texture.LoadFromFile("Resources/Textures/container.png");
+            GrassTexture = Texture.LoadFromFile("Resources/Textures/grass.png", TextureWrapMode.ClampToBorder);
+            WindowTexture = Texture.LoadFromFile("Resources/Textures/window.png", TextureWrapMode.ClampToBorder);
         }
 
         protected override void OnLoadModels()
@@ -137,6 +158,19 @@ namespace Game
             GL.EnableVertexAttribArray(Shader.GetAttribLocation("aTexCoords"));
             GL.VertexAttribPointer(Shader.GetAttribLocation("aTexCoords"), 2, VertexAttribPointerType.Float, false, 5 * sizeof(float), 3 * sizeof(float));
             GL.BindVertexArray(0);
+
+            vegetationVao = GL.GenVertexArray();
+            vegetationVbo = GL.GenBuffer();
+
+            GL.BindVertexArray(vegetationVao);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, vegetationVbo);
+            GL.BufferData(BufferTarget.ArrayBuffer, sizeof(float) * squareVertices.Length, squareVertices, BufferUsageHint.StaticDraw);
+
+            GL.EnableVertexAttribArray(Shader.GetAttribLocation("aPos"));
+            GL.VertexAttribPointer(Shader.GetAttribLocation("aPos"), 3, VertexAttribPointerType.Float, false, 5 * sizeof(float), 0);
+            GL.EnableVertexAttribArray(Shader.GetAttribLocation("aTexCoords"));
+            GL.VertexAttribPointer(Shader.GetAttribLocation("aTexCoords"), 2, VertexAttribPointerType.Float, false, 5 * sizeof(float), 3 * sizeof(float));
+            GL.BindVertexArray(0);
         }
 
         protected override void OnUpdate(FrameEventArgs args)
@@ -158,44 +192,36 @@ namespace Game
 
         protected override void OnRender(FrameEventArgs args, Matrix4 view, Matrix4 projection)
         {
-            GL.Enable(EnableCap.DepthTest);
-            GL.StencilOp(fail: StencilOp.Keep, zfail: StencilOp.Keep, zpass: StencilOp.Replace);
-            
-
-            GL.StencilMask(0x00);
-
             Shader.Use();
             Shader.SetMatrix("view", view);
             Shader.SetMatrix("projection", projection);
 
             GL.BindVertexArray(plainVao);
-            GL.BindTexture(TextureTarget.Texture2D, Plank.Handle);
+            GL.BindTexture(TextureTarget.Texture2D, PlankTexture.Handle);
             Shader.SetMatrix("model", Matrix4.Identity);
             GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
             GL.BindVertexArray(0);
 
-            GL.StencilFunc(StencilFunction.Always, 1, 0xFF);
-            GL.StencilMask(0xFF);
-
             DrawTwoContainers();
 
-            
-            GL.StencilFunc(StencilFunction.Notequal, 1, 0xFF);
-            GL.StencilMask(0x00);
-            GL.Disable(EnableCap.DepthTest);
 
-            OutlineShader.Use();
+            SortedList<float, Vector3> sortedWindows = new SortedList<float, Vector3>();
+            for (int i = 0; i < VegetationPositions.Length; i++)
+            {
+                sortedWindows.Add(Vector3.Distance(Camera.Position, VegetationPositions[i]), VegetationPositions[i]);
+            }
 
-            OutlineShader.SetMatrix("view", view);
-            OutlineShader.SetMatrix("projection", projection);
+            GL.BindVertexArray(vegetationVao);
+            GL.BindTexture(TextureTarget.Texture2D, WindowTexture.Handle);
+            for (int i = 0; i < sortedWindows.Count; i++)
+            {
+                Matrix4 model = Matrix4.Identity;
+                model *= Matrix4.CreateTranslation(sortedWindows.Values[sortedWindows.Count - 1 - i]);
+                Shader.SetMatrix("model", model);
+                GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
+            }
 
-            DrawTwoContainersOutline();
 
-            GL.StencilMask(0xFF);
-            GL.StencilFunc(StencilFunction.Always, 1, 0xFF);
-            GL.Enable(EnableCap.DepthTest);
-
-           
         }
 
         protected override void OnWindowResize(ResizeEventArgs args)
@@ -208,7 +234,7 @@ namespace Game
 
             GL.BindVertexArray(cubeVao);
             GL.ActiveTexture(TextureUnit.Texture0);
-            GL.BindTexture(TextureTarget.Texture2D, Brick.Handle);
+            GL.BindTexture(TextureTarget.Texture2D, BrickTexture.Handle);
             model *= Matrix4.CreateTranslation(-1.0f, 0.1f, -1.0f);
             Shader.SetMatrix("model", model);
             GL.DrawArrays(PrimitiveType.Triangles, 0, 36);

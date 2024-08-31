@@ -21,7 +21,11 @@ namespace GameEngine.MainLooping
 
             GL.Enable(EnableCap.StencilTest);
             GL.Enable(EnableCap.DepthTest);
+            GL.Enable(EnableCap.Blend);
             GL.DepthFunc(DepthFunction.Less);
+
+            GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
+
             this.CursorState = CursorState.Grabbed;
             KeyboardManager.Init(this);
             MouseManager.Init(this);
