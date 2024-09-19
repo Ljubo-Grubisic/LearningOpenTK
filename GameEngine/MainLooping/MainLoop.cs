@@ -32,7 +32,7 @@ namespace GameEngine.MainLooping
 
             OnInit();
             this.Camera = OnCreateCamera();
-            
+
             OnLoadShaders();
             OnLoadTextures();
             OnLoadModels();
