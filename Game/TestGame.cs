@@ -90,15 +90,15 @@ namespace Game
             1.0f, 1.0f, 1.0f, 1.0f
         };
 
+        Vector3 MirrorPosition = new Vector3(-2.5f, 0.0f, 0.0f);
 
-
-        Vector3[] VegetationPositions =
+        Vector3[] WindowPositions =
         {
-            new Vector3(-1.5f, 0.0f, -0.48f),
-            new Vector3( 1.5f, 0.0f, 0.51f),
-            new Vector3( 0.0f, 0.0f, 0.7f),
+            new Vector3(-1.5f, 0.0f, -0.4f),
+            new Vector3( 1.5f, 0.0f, 0.6f),
+            new Vector3( 0.0f, 0.0f, 0.8f),
             new Vector3(-0.3f, 0.0f, -2.3f),
-            new Vector3( 0.5f, 0.0f, -0.6f)
+            new Vector3( 0.5f, 0.0f, -0.8f)
         };
         
 
@@ -146,8 +146,8 @@ namespace Game
         {
             BrickTexture = Texture.LoadFromFile("Resources/Textures/container2.png");
             PlankTexture = Texture.LoadFromFile("Resources/Textures/container.png");
-            GrassTexture = Texture.LoadFromFile("Resources/Textures/grass.png", TextureWrapMode.ClampToBorder);
-            WindowTexture = Texture.LoadFromFile("Resources/Textures/window.png", TextureWrapMode.ClampToBorder);
+            GrassTexture = Texture.LoadFromFile("Resources/Textures/grass.png", TextureWrapMode.ClampToEdge);
+            WindowTexture = Texture.LoadFromFile("Resources/Textures/window.png", TextureWrapMode.ClampToEdge);
 
             texColorBuffer = GL.GenTexture();
             GL.BindTexture(TextureTarget.Texture2D, texColorBuffer);
@@ -241,55 +241,79 @@ namespace Game
 
         protected override void OnRender(FrameEventArgs args, Matrix4 view, Matrix4 projection)
         {
-            GL.BindFramebuffer(FramebufferTarget.Framebuffer, fbo);
-            GL.ClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-            GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-            GL.Enable(EnableCap.DepthTest);
-
+            GL.StencilMask(0xFF);
             Shader.Use();
             Shader.SetMatrix("view", view);
             Shader.SetMatrix("projection", projection);
 
-            GL.BindVertexArray(plainVao);
-            GL.BindTexture(TextureTarget.Texture2D, PlankTexture.Handle);
-            Shader.SetMatrix("model", Matrix4.Identity);
-            GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
-            GL.BindVertexArray(0);
-
-            GL.Enable(EnableCap.CullFace);
-
-            DrawTwoContainers();
-
-            GL.Disable(EnableCap.CullFace);
-
-            SortedList<float, Vector3> sortedWindows = new SortedList<float, Vector3>();
-            for (int i = 0; i < VegetationPositions.Length; i++)
-            {
-                sortedWindows.Add(Vector3.Distance(Camera.Position, VegetationPositions[i]), VegetationPositions[i]);
-            }
-
-            GL.BindVertexArray(vegetationVao);
-            GL.BindTexture(TextureTarget.Texture2D, WindowTexture.Handle);
-            for (int i = 0; i < sortedWindows.Count; i++)
-            {
-                Matrix4 model = Matrix4.Identity;
-                model *= Matrix4.CreateTranslation(sortedWindows.Values[sortedWindows.Count - 1 - i]);
-                Shader.SetMatrix("model", model);
-                GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
-            }
-
-
+            GL.BindFramebuffer(FramebufferTarget.Framebuffer, fbo);
+            GL.ClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+            GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
+            
             GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
             GL.ClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-            GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-            FrameBufferShader.Use();
+            GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
+
+            GL.BindFramebuffer(FramebufferTarget.Framebuffer, fbo);
             
-            
-            GL.BindVertexArray(quadVao);
-            GL.Disable(EnableCap.DepthTest);
-            GL.BindTexture(TextureTarget.Texture2D, this.texColorBuffer);
-            GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
-            GL.BindVertexArray(0);
+            GL.StencilOp(StencilOp.Keep, StencilOp.Keep, StencilOp.Replace);
+            GL.StencilMask(0x00);
+
+            { //Plain
+                GL.BindVertexArray(plainVao);
+                GL.BindTexture(TextureTarget.Texture2D, PlankTexture.Handle);
+                Shader.SetMatrix("model", Matrix4.Identity);
+                GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
+                GL.BindVertexArray(0);
+            }
+
+            { // Container
+                GL.Enable(EnableCap.CullFace);
+
+                GL.StencilFunc(StencilFunction.Always, 1, 0xFF);
+                GL.StencilMask(0xFF);
+                DrawTwoContainers();
+                GL.StencilMask(0x00);
+
+                GL.Disable(EnableCap.CullFace);
+            }
+            { // Windows
+                SortedList<float, Vector3> sortedWindows = new SortedList<float, Vector3>();
+                for (int i = 0; i < WindowPositions.Length; i++)
+                {
+                    sortedWindows.Add(Vector3.Distance(Camera.Position, WindowPositions[i]), WindowPositions[i]);
+                }
+                GL.BindVertexArray(vegetationVao);
+                GL.BindTexture(TextureTarget.Texture2D, WindowTexture.Handle);
+                for (int i = 0; i < sortedWindows.Count; i++)
+                {
+                    Matrix4 model = Matrix4.Identity;
+                    model *= Matrix4.CreateTranslation(sortedWindows.Values[sortedWindows.Count - 1 - i]);
+                    Shader.SetMatrix("model", model);
+                    GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
+                }
+            }
+            { // Outline
+                GL.Disable(EnableCap.DepthTest); 
+                GL.StencilFunc(StencilFunction.Notequal, 1, 0xFF);
+                OutlineShader.Use();
+                OutlineShader.SetMatrix("view", view);
+                OutlineShader.SetMatrix("projection", projection);
+                DrawTwoContainersOutline();
+                OutlineShader.UnBind();
+                GL.StencilFunc(StencilFunction.Always, 1, 0xFF);
+                GL.Enable(EnableCap.DepthTest);
+            }
+
+            { // Screen
+                GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
+                FrameBufferShader.Use();
+                
+                GL.BindVertexArray(quadVao);
+                GL.BindTexture(TextureTarget.Texture2D, this.texColorBuffer);
+                GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
+                GL.BindVertexArray(0);
+            }
         }
 
         protected override void OnWindowResize(ResizeEventArgs args)
@@ -320,13 +344,13 @@ namespace Game
             Matrix4 model = Matrix4.Identity;
 
             GL.BindVertexArray(cubeVao);
-            model *= Matrix4.CreateScale(1.05f);
+            model *= Matrix4.CreateScale(1.07f);
             model *= Matrix4.CreateTranslation(-1.0f, 0.1f, -1.0f);
             OutlineShader.SetMatrix("model", model);
             GL.DrawArrays(PrimitiveType.Triangles, 0, 36);
 
             model = Matrix4.Identity;
-            model *= Matrix4.CreateScale(1.05f);
+            model *= Matrix4.CreateScale(1.07f);
             model *= Matrix4.CreateTranslation(2.0f, 0.1f, 0.0f);
             OutlineShader.SetMatrix("model", model);
             GL.DrawArrays(PrimitiveType.Triangles, 0, 36);

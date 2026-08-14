@@ -141,7 +141,7 @@ namespace GameEngine.ModelLoading
 
                 GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)textureWrapMode);
                 GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)textureWrapMode);
-
+                
                 GL.GenerateMipmap(GenerateMipmapTarget.Texture2D);
             }
 

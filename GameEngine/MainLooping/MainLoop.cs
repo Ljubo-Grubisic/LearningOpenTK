@@ -43,7 +43,7 @@ namespace GameEngine.MainLooping
             base.OnUpdateFrame(args);
 
             Camera.UpdateKeys(MouseState, KeyboardState, (float)args.Time);
-
+            
             OnUpdate(args);
 
             if (KeyboardManager.IsKeyDown(Keys.F11))
@@ -70,7 +70,7 @@ namespace GameEngine.MainLooping
 
             OnRender(args, Camera.GetViewMatrix(), Camera.GetProjectionMatrix());
 
-            SwapBuffers();
+            base.SwapBuffers();
         }
 
         protected override void OnResize(ResizeEventArgs e)

@@ -61,10 +61,7 @@ namespace GameEngine.ModelLoading
             Scene scene = importer.ImportFile(path, PostProcessSteps.Triangulate);
 
             if (scene == null || scene.SceneFlags.HasFlag(SceneFlags.Incomplete) || scene.RootNode == null)
-            {
-                Console.WriteLine("Unable to load model from: " + path);
-                return;
-            }
+                throw new Exception("Unable to load model from: " + path);
 
             this.directory = path.Remove(path.LastIndexOf('/') + 1);
 
