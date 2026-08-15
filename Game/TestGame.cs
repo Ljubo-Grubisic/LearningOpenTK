@@ -11,7 +11,6 @@ using OpenTK.Windowing.Desktop;
 using AbstractGame = GameEngine.MainLooping.Game;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using OpenTK.Graphics.OpenGL4;
-using Assimp.Configs;
 
 namespace Game
 {
@@ -90,7 +89,7 @@ namespace Game
             1.0f, 1.0f, 1.0f, 1.0f
         };
 
-        Vector3 MirrorPosition = new Vector3(-2.5f, 0.0f, 0.0f);
+        Vector3 MirrorPosition = new Vector3(0.0f, 0.0f, 6.0f);
 
         Vector3[] WindowPositions =
         {
@@ -107,7 +106,7 @@ namespace Game
         private Shader LightShader;
         private Shader FrameBufferShader;
 
-        private int cubeVao, cubeVbo, plainVao, plainVbo, vegetationVao, vegetationVbo, quadVao, quadVbo, fbo, rbo, texColorBuffer;
+        private int cubeVao, cubeVbo, plainVao, plainVbo, squareVao, squareVbo, quadVao, quadVbo, fbo, rbo, texColorBuffer, fboMirror, rboMirror, texColorBufferMirror;
 
         private Texture BrickTexture;
         private Texture PlankTexture;
@@ -125,6 +124,12 @@ namespace Game
             fbo = GL.GenFramebuffer();
             rbo = GL.GenRenderbuffer();
             GL.BindRenderbuffer(RenderbufferTarget.Renderbuffer, rbo);
+            GL.RenderbufferStorage(RenderbufferTarget.Renderbuffer, RenderbufferStorage.Depth24Stencil8, Size.X, Size.Y);
+            GL.BindRenderbuffer(RenderbufferTarget.Renderbuffer, 0);
+
+            fboMirror = GL.GenFramebuffer();
+            rboMirror = GL.GenRenderbuffer();
+            GL.BindRenderbuffer(RenderbufferTarget.Renderbuffer, rboMirror);
             GL.RenderbufferStorage(RenderbufferTarget.Renderbuffer, RenderbufferStorage.Depth24Stencil8, Size.X, Size.Y);
             GL.BindRenderbuffer(RenderbufferTarget.Renderbuffer, 0);
         }
@@ -152,7 +157,13 @@ namespace Game
             texColorBuffer = GL.GenTexture();
             GL.BindTexture(TextureTarget.Texture2D, texColorBuffer);
             GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgb, Size.X, Size.Y, 0, PixelFormat.Rgb, PixelType.UnsignedByte, IntPtr.Zero);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMinFilter.Linear);
+            GL.BindTexture(TextureTarget.Texture2D, 0);
 
+            texColorBufferMirror = GL.GenTexture();
+            GL.BindTexture(TextureTarget.Texture2D, texColorBufferMirror);
+            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgb, Size.X, Size.Y, 0, PixelFormat.Rgb, PixelType.UnsignedByte, IntPtr.Zero);
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMinFilter.Linear);
             GL.BindTexture(TextureTarget.Texture2D, 0);
@@ -160,6 +171,13 @@ namespace Game
             GL.BindFramebuffer(FramebufferTarget.Framebuffer, fbo);
             GL.FramebufferTexture2D(FramebufferTarget.Framebuffer, FramebufferAttachment.ColorAttachment0, TextureTarget.Texture2D, texColorBuffer, 0);
             GL.FramebufferRenderbuffer(FramebufferTarget.Framebuffer, FramebufferAttachment.DepthStencilAttachment, RenderbufferTarget.Renderbuffer, rbo);
+
+            if (GL.CheckFramebufferStatus(FramebufferTarget.Framebuffer) != FramebufferErrorCode.FramebufferComplete)
+                Console.WriteLine("Framebuffer error");
+
+            GL.BindFramebuffer(FramebufferTarget.Framebuffer, fboMirror);
+            GL.FramebufferTexture2D(FramebufferTarget.Framebuffer, FramebufferAttachment.ColorAttachment0, TextureTarget.Texture2D, texColorBufferMirror, 0);
+            GL.FramebufferRenderbuffer(FramebufferTarget.Framebuffer, FramebufferAttachment.DepthStencilAttachment, RenderbufferTarget.Renderbuffer, rboMirror);
 
             if (GL.CheckFramebufferStatus(FramebufferTarget.Framebuffer) != FramebufferErrorCode.FramebufferComplete)
                 Console.WriteLine("Framebuffer error");
@@ -195,11 +213,11 @@ namespace Game
             GL.VertexAttribPointer(Shader.GetAttribLocation("aTexCoords"), 2, VertexAttribPointerType.Float, false, 5 * sizeof(float), 3 * sizeof(float));
             GL.BindVertexArray(0);
 
-            vegetationVao = GL.GenVertexArray();
-            vegetationVbo = GL.GenBuffer();
+            squareVao = GL.GenVertexArray();
+            squareVbo = GL.GenBuffer();
 
-            GL.BindVertexArray(vegetationVao);
-            GL.BindBuffer(BufferTarget.ArrayBuffer, vegetationVbo);
+            GL.BindVertexArray(squareVao);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, squareVbo);
             GL.BufferData(BufferTarget.ArrayBuffer, sizeof(float) * squareVertices.Length, squareVertices, BufferUsageHint.StaticDraw);
 
             GL.EnableVertexAttribArray(Shader.GetAttribLocation("aPos"));
@@ -250,6 +268,10 @@ namespace Game
             GL.ClearColor(0.1f, 0.1f, 0.1f, 1.0f);
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
             
+            GL.BindFramebuffer(FramebufferTarget.Framebuffer, fboMirror);
+            GL.ClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+            GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
+
             GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
             GL.ClearColor(0.0f, 0.0f, 0.0f, 1.0f);
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
@@ -277,13 +299,65 @@ namespace Game
 
                 GL.Disable(EnableCap.CullFace);
             }
-            { // Windows
+            { // Mirror
+                GL.BindFramebuffer(FramebufferTarget.Framebuffer, fboMirror);
+                { // Draw the whole scene again but from mirror perspective
+                    Vector3 cameraToMirror = Camera.Position - MirrorPosition;
+                    Vector3 mirrorNormal = Vector3.UnitZ;
+
+                    Vector3 reflectedCameraPosition =
+                        Camera.Position - 2.0f *
+                        Vector3.Dot(cameraToMirror, Vector3.UnitZ) *
+                        mirrorNormal;
+
+                    // Reflect the camera's viewing direction.
+                    Vector3 reflectedForward =
+                        Camera.Front - 2.0f *
+                        Vector3.Dot(Camera.Front, mirrorNormal) *
+                        mirrorNormal;
+
+                    reflectedForward = Vector3.Normalize(reflectedForward);
+                    Shader.SetMatrix("view", Matrix4.LookAt(reflectedCameraPosition, reflectedCameraPosition + reflectedForward, Vector3.UnitY));   
+                    { //Plain
+                        GL.BindVertexArray(plainVao);
+                        GL.BindTexture(TextureTarget.Texture2D, PlankTexture.Handle);
+                        Shader.SetMatrix("model", Matrix4.Identity);
+                        GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
+                        GL.BindVertexArray(0);
+                    }
+                    { // Container
+                        GL.Enable(EnableCap.CullFace);
+
+                        GL.StencilFunc(StencilFunction.Always, 1, 0xFF);
+                        GL.StencilMask(0xFF);
+                        DrawTwoContainers();
+                        GL.StencilMask(0x00);
+
+                        GL.Disable(EnableCap.CullFace);
+                    }
+                }
+                Shader.SetMatrix("view", view);
+                Shader.SetMatrix("projection", projection);
+                GL.BindFramebuffer(FramebufferTarget.Framebuffer, fbo);
+                GL.StencilMask(0xFF);
+
+                GL.BindVertexArray(squareVao);
+                GL.BindTexture(TextureTarget.Texture2D, this.texColorBufferMirror);
+                Matrix4 model = Matrix4.Identity;
+                model *= Matrix4.CreateTranslation(MirrorPosition);
+                Shader.SetMatrix("model", model);
+                GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
+
+                GL.StencilMask(0x00);
+                GL.BindVertexArray(0);
+            } /*
+            { // Windows 
                 SortedList<float, Vector3> sortedWindows = new SortedList<float, Vector3>();
                 for (int i = 0; i < WindowPositions.Length; i++)
                 {
                     sortedWindows.Add(Vector3.Distance(Camera.Position, WindowPositions[i]), WindowPositions[i]);
                 }
-                GL.BindVertexArray(vegetationVao);
+                GL.BindVertexArray(squareVao);
                 GL.BindTexture(TextureTarget.Texture2D, WindowTexture.Handle);
                 for (int i = 0; i < sortedWindows.Count; i++)
                 {
@@ -292,7 +366,8 @@ namespace Game
                     Shader.SetMatrix("model", model);
                     GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
                 }
-            }
+                GL.BindVertexArray(0);
+            }*/
             { // Outline
                 GL.Disable(EnableCap.DepthTest); 
                 GL.StencilFunc(StencilFunction.Notequal, 1, 0xFF);
